@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, BrowserRouter, Redirect } from 'react-router-dom';
 import { useModel } from 'hooks';
 
 import { loader } from '@monaco-editor/react';
@@ -12,6 +12,7 @@ import BusyLoaderWrapper from 'components/BusyLoaderWrapper/BusyLoaderWrapper';
 import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 
 import { getBasePath } from 'config/config';
+import { PathEnum } from 'config/enums/routesEnum';
 
 import PageWrapper from 'pages/PageWrapper';
 
@@ -20,42 +21,60 @@ import routes from 'routes/routes';
 import projectsModel from 'services/models/projects/projectsModel';
 
 import { IProjectsModelState } from './types/services/models/projects/projectsModel';
-import usePyodide from './services/pyodide/usePyodide';
+import { preloadFonts } from './utils/fontLoader';
+import { preloadCriticalStyles, initStyleLoader } from './utils/styleLoader';
+import { initScssLoader } from './utils/scssLoader';
+import { initControlPopoverLoader } from './utils/controlPopoverLoader';
 
 import './App.scss';
 
-const basePath = getBasePath(false);
-
 // loading monaco from node modules instead of CDN
+// 在qiankun环境中，需要动态获取正确的路径
+const getMonacoPath = () => {
+  const win = window as any;
+  if (win.__POWERED_BY_QIANKUN__ && win.__INJECTED_PUBLIC_PATH_BY_QIANKUN__) {
+    return `${win.__INJECTED_PUBLIC_PATH_BY_QIANKUN__}static-files/vs`;
+  }
+  return `${getBasePath()}/static-files/vs`;
+};
+
 loader.config({
   paths: {
-    vs: `${getBasePath()}/static-files/vs`,
+    vs: getMonacoPath(),
   },
 });
 
 function App(): React.FunctionComponentElement<React.ReactNode> {
   const projectsData = useModel<Partial<IProjectsModelState>>(projectsModel);
-  const { loadPyodide } = usePyodide();
 
+  // 预加载字体文件和样式文件，确保在qiankun环境下正常显示
   React.useEffect(() => {
-    let timeoutId: number;
-    const preloader = document.getElementById('preload-spinner');
-    if (preloader) {
-      preloader.classList.add('preloader-fade-out');
-      timeoutId = window.setTimeout(() => {
-        preloader.remove();
-      }, 500);
-    }
+    // 初始化样式加载器
+    initStyleLoader();
 
-    loadPyodide();
+    // 初始化SCSS加载器
+    initScssLoader();
 
-    return () => {
-      window.clearTimeout(timeoutId);
-    };
+    // 初始化ControlPopover样式加载器
+    initControlPopoverLoader();
+
+    // 预加载字体和样式
+    Promise.all([
+      preloadFonts().catch(() => {
+        // 字体加载失败时静默处理，不影响应用正常运行
+      }),
+      preloadCriticalStyles().catch(() => {
+        // 样式加载失败时静默处理，不影响应用正常运行
+      }),
+    ]).catch(() => {
+      // 整体加载失败时静默处理
+    });
   }, []);
 
   return (
-    <BrowserRouter basename={basePath}>
+    <BrowserRouter
+    // basename={(window as any).__POWERED_BY_QIANKUN__ ? '/app3' : '/'}
+    >
       <ProjectWrapper />
       <Theme>
         {projectsData?.project?.warn_index && (
@@ -71,9 +90,9 @@ function App(): React.FunctionComponentElement<React.ReactNode> {
           </AlertBanner>
         )}
         <div className='pageContainer'>
-          <ErrorBoundary>
+          {/* <ErrorBoundary>
             <SideBar />
-          </ErrorBoundary>
+          </ErrorBoundary> */}
           <div className='mainContainer'>
             <React.Suspense
               fallback={<BusyLoaderWrapper height='100vh' isLoading />}
@@ -81,6 +100,7 @@ function App(): React.FunctionComponentElement<React.ReactNode> {
               <Switch>
                 {Object.values(routes).map((route, index) => {
                   const { component: Component, path, isExact, title } = route;
+
                   return (
                     <Route path={path} key={index} exact={isExact}>
                       <ErrorBoundary>
@@ -91,7 +111,7 @@ function App(): React.FunctionComponentElement<React.ReactNode> {
                     </Route>
                   );
                 })}
-                <Redirect to='/' />
+                <Redirect to={PathEnum.Dashboard} />
               </Switch>
             </React.Suspense>
           </div>

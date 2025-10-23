@@ -9,7 +9,7 @@ class ErrorBoundary extends React.Component<
   IErrorBoundaryProps,
   IErrorBoundaryState
 > {
-  private _fallback: React.FunctionComponent;
+  private _fallback: () => React.ReactElement | null;
 
   constructor(props: IErrorBoundaryProps) {
     super(props);
@@ -25,7 +25,9 @@ class ErrorBoundary extends React.Component<
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
-    // Log error to reporting servie
+    console.error('ErrorBoundary caught an error:', error);
+    console.error('Error info:', errorInfo);
+    // Log error to reporting service
   }
 
   render(): React.ReactNode {
@@ -33,7 +35,7 @@ class ErrorBoundary extends React.Component<
       return <this._fallback />;
     }
 
-    return this.props.children;
+    return this.props.children ?? null;
   }
 }
 

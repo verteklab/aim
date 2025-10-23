@@ -8,6 +8,7 @@ import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 
 import { TABLE_DEFAULT_CONFIG } from 'config/table/tableConfigs';
 import { MetricsValueKeyEnum } from 'config/enums/tableEnums';
+import { useTranslation } from 'config/i18n';
 
 import { AppNameEnum } from 'services/models/explorer';
 
@@ -18,6 +19,7 @@ function MetricsValueKeyPopover({
   onMetricsValueKeyChange,
   appName,
 }: any) {
+  const { t } = useTranslation();
   const metricsValueKeyChanged: boolean = React.useMemo(() => {
     return (
       metricsValueKey !==
@@ -28,7 +30,9 @@ function MetricsValueKeyPopover({
   return (
     <ErrorBoundary>
       <ControlPopover
-        title='Select metrics value'
+        title={t('table.metricsValue.title', {
+          defaultValue: 'Select metrics value',
+        })}
         anchorOrigin={{
           vertical: 'top',
           horizontal: 'left',
@@ -49,7 +53,9 @@ function MetricsValueKeyPopover({
           >
             <Icon name='metric-value' />
             <Text size={14} tint={100}>
-              {metricsValueKey} Value
+              {t(`table.metricsValue.trigger.${metricsValueKey}`, {
+                defaultValue: `${metricsValueKey} Value`,
+              })}
             </Text>
           </Button>
         )}
@@ -59,25 +65,33 @@ function MetricsValueKeyPopover({
               selected={metricsValueKey === MetricsValueKeyEnum.FIRST}
               onClick={() => onMetricsValueKeyChange(MetricsValueKeyEnum.FIRST)}
             >
-              First Value
+              {t('table.metricsValue.options.first', {
+                defaultValue: 'First Value',
+              })}
             </MenuItem>
             <MenuItem
               selected={metricsValueKey === MetricsValueKeyEnum.MAX}
               onClick={() => onMetricsValueKeyChange(MetricsValueKeyEnum.MAX)}
             >
-              Max Value
+              {t('table.metricsValue.options.max', {
+                defaultValue: 'Max Value',
+              })}
             </MenuItem>
             <MenuItem
               selected={metricsValueKey === MetricsValueKeyEnum.MIN}
               onClick={() => onMetricsValueKeyChange(MetricsValueKeyEnum.MIN)}
             >
-              Min Value
+              {t('table.metricsValue.options.min', {
+                defaultValue: 'Min Value',
+              })}
             </MenuItem>
             <MenuItem
               selected={metricsValueKey === MetricsValueKeyEnum.LAST}
               onClick={() => onMetricsValueKeyChange(MetricsValueKeyEnum.LAST)}
             >
-              Last Value
+              {t('table.metricsValue.options.last', {
+                defaultValue: 'Last Value',
+              })}
             </MenuItem>
           </div>
         }

@@ -7,12 +7,14 @@ import { Button, Icon, Text } from 'components/kit';
 import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 
 import { RowHeightSize, TABLE_DEFAULT_CONFIG } from 'config/table/tableConfigs';
+import { useTranslation } from 'config/i18n';
 
 import { AppNameEnum } from 'services/models/explorer';
 
 import './RowHeightPopover.scss';
 
 function RowHeightPopover({ rowHeight, onRowHeightChange, appName }: any) {
+  const { t } = useTranslation();
   const rowHeightChanged: boolean = React.useMemo(() => {
     return (
       rowHeight !== TABLE_DEFAULT_CONFIG[appName as AppNameEnum]?.rowHeight
@@ -22,7 +24,9 @@ function RowHeightPopover({ rowHeight, onRowHeightChange, appName }: any) {
   return (
     <ErrorBoundary>
       <ControlPopover
-        title='Select content density mode'
+        title={t('table.rowHeight.title', {
+          defaultValue: 'Select content density mode',
+        })}
         anchorOrigin={{
           vertical: 'top',
           horizontal: 'left',
@@ -43,7 +47,7 @@ function RowHeightPopover({ rowHeight, onRowHeightChange, appName }: any) {
           >
             <Icon name='row-height' />
             <Text size={14} tint={100}>
-              Row Height
+              {t('table.rowHeight.trigger', { defaultValue: 'Row Height' })}
             </Text>
           </Button>
         )}
@@ -53,13 +57,13 @@ function RowHeightPopover({ rowHeight, onRowHeightChange, appName }: any) {
               selected={rowHeight === RowHeightSize.sm}
               onClick={() => onRowHeightChange(RowHeightSize.sm)}
             >
-              Compact
+              {t('table.rowHeight.compact', { defaultValue: 'Compact' })}
             </MenuItem>
             <MenuItem
               selected={rowHeight === RowHeightSize.md}
               onClick={() => onRowHeightChange(RowHeightSize.md)}
             >
-              Normal
+              {t('table.rowHeight.normal', { defaultValue: 'Normal' })}
             </MenuItem>
           </div>
         }

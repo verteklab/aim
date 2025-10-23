@@ -10,6 +10,7 @@ import ControlPopover from 'components/ControlPopover/ControlPopover';
 
 import pageTitlesEnum from 'config/pageTitles/pageTitles';
 import { DOCUMENTATIONS } from 'config/references';
+import { useTranslation } from 'config/i18n';
 
 import 'pages/Metrics/components/MetricsBar/MetricsBar.scss';
 
@@ -19,14 +20,16 @@ function RunsBar(props: {
   onLiveUpdateConfigChange: () => void;
   disabled: boolean;
 }): React.FunctionComponentElement<React.ReactNode> {
+  const { t } = useTranslation();
+
   return (
     <ErrorBoundary>
-      <AppBar title={pageTitlesEnum.RUNS_EXPLORER} disabled={props.disabled}>
+      <AppBar title={t(pageTitlesEnum.RUNS_EXPLORER)} disabled={props.disabled}>
         <LiveUpdateSettings {...props} />
         <div className='MetricsBar__menu'>
           <ErrorBoundary>
             <ControlPopover
-              title='Menu'
+              title={t('common.menu')}
               anchor={({ onAnchorClick }) => (
                 <Button
                   withOnlyIcon
@@ -48,7 +51,7 @@ function RunsBar(props: {
                     target='_blank'
                     rel='noreferrer'
                   >
-                    <MenuItem>Explorer Documentation</MenuItem>
+                    <MenuItem>{t('common.explorerDocumentation')}</MenuItem>
                   </a>
                 </div>
               }

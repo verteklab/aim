@@ -14,6 +14,7 @@ import './Runs.scss';
 function Runs(props: any): React.FunctionComponentElement<React.ReactNode> {
   const [isProgressBarVisible, setIsProgressBarVisible] =
     React.useState<boolean>(false);
+
   return (
     <div className='Runs__container'>
       <section className='Runs__section'>

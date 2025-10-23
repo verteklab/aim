@@ -54,7 +54,7 @@ function Dashboard(): React.FunctionComponentElement<React.ReactNode> {
           )}
           {!isLoading && !totalRunsCount && <AimIntegrations />}
         </div>
-        <DashboardRight />
+        {/* <DashboardRight /> */}
       </section>
     </ErrorBoundary>
   );

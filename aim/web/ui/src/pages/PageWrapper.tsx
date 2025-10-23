@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { PathEnum } from 'config/enums/routesEnum';
+import { useTranslation } from 'config/i18n';
 
 import { setDocumentTitle } from 'utils/document/documentTitle';
 
@@ -10,14 +11,26 @@ function PageWrapper(props: {
   path: PathEnum;
 }) {
   const { title, path, children } = props;
+  const { t } = useTranslation();
+
+  const translatedTitle = React.useMemo(() => {
+    if (!title) {
+      return '';
+    }
+    return t(title);
+  }, [title, t]);
 
   React.useEffect(() => {
     if (path === PathEnum.Dashboard) {
       setDocumentTitle();
     } else if (path !== PathEnum.Run_Detail) {
-      setDocumentTitle(title, true);
+      if (translatedTitle) {
+        setDocumentTitle(translatedTitle, true);
+      } else {
+        setDocumentTitle();
+      }
     }
-  }, [title, path]);
+  }, [translatedTitle, path]);
 
   return <>{children}</>;
 }

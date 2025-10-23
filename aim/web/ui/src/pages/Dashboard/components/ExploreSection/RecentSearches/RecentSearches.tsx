@@ -19,6 +19,8 @@ function RecentSearches(): React.FunctionComponentElement<React.ReactNode> | nul
       setRecentSearches(JSON.parse(recent));
     }
   }, []);
+  console.log(recentSearches);
+
   return recentSearches.length ? (
     <div className='RecentSearches'>
       <Text

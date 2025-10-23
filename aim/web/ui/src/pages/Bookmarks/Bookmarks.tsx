@@ -8,6 +8,7 @@ import NotificationContainer from 'components/NotificationContainer/Notification
 
 import pageTitlesEnum from 'config/pageTitles/pageTitles';
 import { IllustrationsEnum } from 'config/illustrationConfig/illustrationConfig';
+import { useTranslation } from 'config/i18n';
 
 import { IBookmarksProps } from 'types/pages/bookmarks/Bookmarks';
 
@@ -22,11 +23,12 @@ function Bookmarks({
   notifyData,
   onNotificationDelete,
 }: IBookmarksProps): React.FunctionComponentElement<React.ReactNode> {
+  const { t } = useTranslation();
   return (
     <ErrorBoundary>
       <section className='Bookmarks'>
         <AppBar
-          title={pageTitlesEnum.BOOKMARKS}
+          title={t(pageTitlesEnum.BOOKMARKS)}
           className='Bookmarks__appBar'
         />
         <div className='Bookmarks__container'>
@@ -46,7 +48,7 @@ function Bookmarks({
                 size='xLarge'
                 page='bookmarks'
                 type={IllustrationsEnum.EmptyBookmarks}
-                title={'No Bookmarks Yet'}
+                title={t('bookmarks.emptyTitle')}
               />
             ) : null}
           </div>

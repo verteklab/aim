@@ -304,6 +304,7 @@ function Table(props) {
             'Table--grouped': groups,
           })}
         >
+          {/* table左侧checkbox */}
           {!groups && props.multiSelect && Array.isArray(props.data) && (
             <ErrorBoundary key={'selection'}>
               <div

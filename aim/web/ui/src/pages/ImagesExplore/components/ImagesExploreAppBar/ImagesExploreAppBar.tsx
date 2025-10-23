@@ -11,6 +11,7 @@ import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 import ConfirmModal from 'components/ConfirmModal/ConfirmModal';
 
 import { DOCUMENTATIONS } from 'config/references';
+import { useTranslation } from 'config/i18n';
 
 import './ImagesExploreAppBar.scss';
 
@@ -23,6 +24,7 @@ function ImagesExploreAppBar({
 }: any): React.FunctionComponentElement<React.ReactNode> {
   const [popover, setPopover] = React.useState<string>('');
   const route = useRouteMatch<any>();
+  const { t } = useTranslation();
 
   function handleBookmarkClick(value: string): void {
     setPopover(value);
@@ -39,18 +41,18 @@ function ImagesExploreAppBar({
 
   return (
     <ErrorBoundary>
-      <AppBar title={title} disabled={disabled}>
+      <AppBar title={title ? t(title) : ''} disabled={disabled}>
         {route.params.appId ? (
           <ErrorBoundary>
             <ControlPopover
-              title='Bookmark'
+              title={t('bookmarks.bookmark')}
               anchor={({ onAnchorClick }) => (
                 <Button color='secondary' size='small' onClick={onAnchorClick}>
                   <Text
                     size={14}
                     className='ImagesExploreAppBar__item__bookmark__Text'
                   >
-                    Bookmark
+                    {t('bookmarks.bookmark')}
                   </Text>
                   <Icon
                     name='bookmarks'
@@ -61,10 +63,10 @@ function ImagesExploreAppBar({
               component={
                 <div className='ImagesExploreAppBar__popover'>
                   <MenuItem onClick={() => handleBookmarkClick('create')}>
-                    Create Bookmark
+                    {t('bookmarks.create')}
                   </MenuItem>
                   <MenuItem onClick={() => handleBookmarkClick('update')}>
-                    Update Bookmark
+                    {t('bookmarks.update')}
                   </MenuItem>
                 </div>
               }
@@ -81,7 +83,7 @@ function ImagesExploreAppBar({
               size={14}
               className='ImagesExploreAppBar__item__bookmark__Text'
             >
-              Bookmark
+              {t('bookmarks.bookmark')}
             </Text>
             <Icon
               fontSize={14}
@@ -93,7 +95,7 @@ function ImagesExploreAppBar({
         <div className='ImagesExploreAppBar__menu'>
           <ErrorBoundary>
             <ControlPopover
-              title='Menu'
+              title={t('common.menu')}
               anchor={({ onAnchorClick }) => (
                 <Button
                   withOnlyIcon
@@ -111,14 +113,14 @@ function ImagesExploreAppBar({
               component={
                 <div className='ImagesExploreAppBar__popover'>
                   <MenuItem onClick={onResetConfigData}>
-                    Reset Controls to System Defaults
+                    {t('common.resetControls')}
                   </MenuItem>
                   <a
                     href={DOCUMENTATIONS.EXPLORERS.IMAGES.MAIN}
                     target='_blank'
                     rel='noreferrer'
                   >
-                    <MenuItem>Explorer Documentation</MenuItem>
+                    <MenuItem>{t('common.explorerDocumentation')}</MenuItem>
                   </a>
                 </div>
               }
@@ -136,11 +138,11 @@ function ImagesExploreAppBar({
           open={popover === 'update'}
           onCancel={handleClosePopover}
           onSubmit={handleBookmarkUpdate}
-          text='Are you sure you want to update bookmark?'
+          text={t('bookmarks.updateConfirmText')}
           icon={<Icon name='check' />}
-          title='Update bookmark'
+          title={t('bookmarks.updateConfirmTitle')}
           statusType='success'
-          confirmBtnText='Update'
+          confirmBtnText={t('bookmarks.updateConfirmButton')}
         />
       </AppBar>
     </ErrorBoundary>

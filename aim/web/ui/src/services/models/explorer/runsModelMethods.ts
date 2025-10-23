@@ -108,6 +108,7 @@ function getRunsModelMethods(
   let updateTableTimeoutId: number;
 
   function initialize(appId: string = '') {
+    debugger;
     model.init();
     const state: Partial<IAppModelState> = {};
     if (grouping) {
@@ -944,7 +945,10 @@ function getRunsModelMethods(
   }
 
   function destroy(): void {
-    runsRequestRef.abort();
+    // Check if runsRequestRef exists and has abort method before calling it
+    if (runsRequestRef && typeof runsRequestRef.abort === 'function') {
+      runsRequestRef.abort();
+    }
     liveUpdateInstance?.clear();
     liveUpdateInstance = null; //@TODO check is this need or not
     model.setState({

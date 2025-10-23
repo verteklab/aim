@@ -7,6 +7,7 @@ import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 import AutocompleteInput from 'components/AutocompleteInput';
 
 import { ANALYTICS_EVENT_KEYS } from 'config/analytics/analyticsKeysMap';
+import { useTranslation } from 'config/i18n';
 
 import runAppModel from 'services/models/runs/runsAppModel';
 import { trackEvent } from 'services/analytics';
@@ -22,6 +23,7 @@ function SearchBar({
   onSearchInputChange,
   isDisabled,
 }: any) {
+  const { t } = useTranslation();
   const searchRunsRef = React.useRef<any>(null);
   const autocompleteRef: any = React.useRef<React.MutableRefObject<any>>(null);
   React.useEffect(() => {
@@ -73,6 +75,7 @@ function SearchBar({
         </form>
         <Divider style={{ margin: '0 1em' }} orientation='vertical' flexItem />
         <Button
+          size='large'
           className='Runs_Search_Bar__Button'
           color='primary'
           onClick={isRunsDataLoading ? handleRequestAbort : handleRunSearch}
@@ -84,7 +87,9 @@ function SearchBar({
             />
           }
         >
-          {isRunsDataLoading ? 'Cancel' : 'Search'}
+          {isRunsDataLoading
+            ? t('common.cancel', { defaultValue: 'Cancel' })
+            : t('common.search', { defaultValue: 'Search' })}
         </Button>
       </div>
     </ErrorBoundary>

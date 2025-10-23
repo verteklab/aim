@@ -127,3 +127,4 @@ dmypy.json
 
 .aim
 html
+/node_modules

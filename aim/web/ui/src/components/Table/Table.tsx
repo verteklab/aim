@@ -18,6 +18,7 @@ import {
   TABLE_DEFAULT_CONFIG,
 } from 'config/table/tableConfigs';
 import { IllustrationsEnum } from 'config/illustrationConfig/illustrationConfig';
+import { useTranslation } from 'config/i18n';
 
 import SortPopover from 'pages/Metrics/components/Table/SortPopover/SortPopover';
 import ManageColumnsPopover from 'pages/Metrics/components/Table/ManageColumnsPopover/ManageColumnsPopover';
@@ -101,6 +102,7 @@ const Table = React.forwardRef(function Table(
   }: ITableProps,
   ref,
 ): React.FunctionComponentElement<React.ReactNode> {
+  const { t } = useTranslation();
   const tableRef = React.useRef();
   const startIndex = React.useRef(0);
   const endIndex = React.useRef(0);
@@ -143,6 +145,11 @@ const Table = React.forwardRef(function Table(
     width: 0,
     availableSpace: 0,
   });
+
+  const selectedCount = React.useMemo(
+    () => Object.keys(selectedRows || {}).length,
+    [selectedRows],
+  );
 
   let groups = !Array.isArray(rowData);
 
@@ -804,7 +811,9 @@ const Table = React.forwardRef(function Table(
                       vertical: 'bottom',
                       horizontal: 'left',
                     }}
-                    title='Sort table by:'
+                    title={t('table.sort.title', {
+                      defaultValue: 'Sort table by:',
+                    })}
                     anchor={({ onAnchorClick, opened }) => (
                       <Button
                         type='text'
@@ -817,7 +826,7 @@ const Table = React.forwardRef(function Table(
                       >
                         <Icon name='sort-outside' />
                         <Text size={14} tint={100}>
-                          Sort
+                          {t('table.sort.button', { defaultValue: 'Sort' })}
                         </Text>
                       </Button>
                     )}
@@ -854,7 +863,7 @@ const Table = React.forwardRef(function Table(
                   disabled={isDiffButtonDisabled}
                   onClick={onTableDiffShow}
                 >
-                  Show Table Diff
+                  {t('table.diff', { defaultValue: 'Show Table Diff' })}
                 </Button>
               )}
               {onExport && (
@@ -867,7 +876,7 @@ const Table = React.forwardRef(function Table(
                     startIcon={<Icon fontSize={14} name='download' />}
                   >
                     <Text size={14} color='inherit'>
-                      Export
+                      {t('table.export', { defaultValue: 'Export' })}
                     </Text>
                   </Button>
                 </div>
@@ -877,7 +886,10 @@ const Table = React.forwardRef(function Table(
             <div className='Table__header selectedRowActionsContainer'>
               <div className='selectedRowActionsContainer__selectedRowsCount'>
                 <Text size={14} tint={50}>
-                  {Object.keys(selectedRows).length} Selected
+                  {t('table.selected', {
+                    defaultValue: '{{count}} Selected',
+                    values: { count: selectedCount },
+                  })}
                 </Text>
               </div>
               {tableBulkActionsVisibility.delete && (
@@ -893,7 +905,7 @@ const Table = React.forwardRef(function Table(
                   >
                     <Icon name='delete' />
                     <Text size={14} tint={100}>
-                      Delete
+                      {t('table.delete', { defaultValue: 'Delete' })}
                     </Text>
                   </Button>
                 </div>
@@ -911,7 +923,7 @@ const Table = React.forwardRef(function Table(
                   >
                     <Icon name='archive' />
                     <Text size={14} tint={100}>
-                      Archive
+                      {t('table.archive', { defaultValue: 'Archive' })}
                     </Text>
                   </Button>
                 </div>
@@ -929,7 +941,7 @@ const Table = React.forwardRef(function Table(
                   >
                     <Icon name='unarchive' fontSize={18} />
                     <Text size={14} tint={100}>
-                      Unarchive
+                      {t('table.unarchive', { defaultValue: 'Unarchive' })}
                     </Text>
                   </Button>
                 </div>
@@ -945,7 +957,10 @@ const Table = React.forwardRef(function Table(
                   >
                     <Icon name='eye-outline-hide' fontSize={14} />
                     <Text size={14} tint={100}>
-                      {`Hide ${visualizationElementType}s`}
+                      {t('table.hideItems', {
+                        defaultValue: 'Hide {{type}}s',
+                        values: { type: visualizationElementType },
+                      })}
                     </Text>
                   </Button>
                 </div>
@@ -960,7 +975,10 @@ const Table = React.forwardRef(function Table(
                   >
                     <Icon name='eye-show-outline' fontSize={14} />
                     <Text size={14} tint={100}>
-                      {`Show ${visualizationElementType}s`}
+                      {t('table.showItems', {
+                        defaultValue: 'Show {{type}}s',
+                        values: { type: visualizationElementType },
+                      })}
                     </Text>
                   </Button>
                 </div>
@@ -1020,7 +1038,7 @@ const Table = React.forwardRef(function Table(
                   </div>
                 ) : (
                   <ErrorBoundary>
-                    <BaseTable
+                    {/* <BaseTable
                       ref={tableRef}
                       classPrefix='BaseTable'
                       columns={columnsData}
@@ -1055,7 +1073,7 @@ const Table = React.forwardRef(function Table(
                       onRowHover={onRowHover}
                       onRowClick={onRowClick}
                       disableRowClick={disableRowClick}
-                    />
+                    /> */}
                   </ErrorBoundary>
                 )
               }

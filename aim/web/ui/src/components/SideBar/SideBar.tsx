@@ -10,11 +10,13 @@ import { Icon, Text } from 'components/kit';
 import { IconName } from 'components/kit/Icon';
 import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 import CommunityPopup from 'components/CommunityPopup';
+import LanguageSwitcher from 'components/LanguageSwitcher';
 
 import { PathEnum } from 'config/enums/routesEnum';
 import { AIM_VERSION } from 'config/config';
 import { ANALYTICS_EVENT_KEYS } from 'config/analytics/analyticsKeysMap';
 import { DOCUMENTATIONS } from 'config/references';
+import { useTranslation } from 'config/i18n';
 
 import routes, { IRoute } from 'routes/routes';
 
@@ -25,6 +27,8 @@ import { getItem } from 'utils/storage';
 import './Sidebar.scss';
 
 function SideBar(): React.FunctionComponentElement<React.ReactNode> {
+  const { t } = useTranslation();
+
   function getPathFromStorage(route: PathEnum): PathEnum | string {
     const path = getItem(`${route.slice(1)}Url`) ?? '';
     if (path !== '' && path.startsWith(route)) {
@@ -73,7 +77,7 @@ function SideBar(): React.FunctionComponentElement<React.ReactNode> {
                           name={icon as IconName}
                         />
                         <span className='Sidebar__List__item--text'>
-                          {displayName}
+                          {displayName ? t(displayName) : ''}
                         </span>
                       </li>
                     </NavLink>
@@ -84,7 +88,7 @@ function SideBar(): React.FunctionComponentElement<React.ReactNode> {
           </ul>
           <div className='Sidebar__bottom'>
             <CommunityPopup>
-              <Tooltip title='Community Discord' placement='right'>
+              <Tooltip title={t('common.communityDiscord')} placement='right'>
                 <a
                   target='_blank'
                   href='https://community.aimstack.io/'
@@ -98,7 +102,7 @@ function SideBar(): React.FunctionComponentElement<React.ReactNode> {
                 </a>
               </Tooltip>
             </CommunityPopup>
-            <Tooltip title='Docs' placement='right'>
+            <Tooltip title={t('common.docs')} placement='right'>
               <a
                 target='_blank'
                 href={DOCUMENTATIONS.MAIN_PAGE}
@@ -109,6 +113,7 @@ function SideBar(): React.FunctionComponentElement<React.ReactNode> {
                 <Icon name='full-docs' />
               </a>
             </Tooltip>
+            <LanguageSwitcher />
             <Text tint={30}>v{AIM_VERSION}</Text>
           </div>
         </Drawer>

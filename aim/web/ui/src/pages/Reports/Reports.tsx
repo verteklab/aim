@@ -9,8 +9,8 @@ import Illustration, { ILLUSTRATION_TYPES } from 'components/Illustration';
 import AppBar from 'components/AppBar/AppBar';
 
 import { PathEnum } from 'config/enums/routesEnum';
-
-import pageTitlesEnum from '../../config/pageTitles/pageTitles';
+import pageTitlesEnum from 'config/pageTitles/pageTitles';
+import { useTranslation } from 'config/i18n';
 
 import useReports from './useReports';
 import {
@@ -21,6 +21,7 @@ import {
 import ReportCard from './ReportCard/ReportCard';
 
 function Reports(): React.FunctionComponentElement<React.ReactNode> {
+  const { t } = useTranslation();
   const {
     reports,
     isLoading,
@@ -33,7 +34,7 @@ function Reports(): React.FunctionComponentElement<React.ReactNode> {
   return (
     <ErrorBoundary>
       <section className='Reports'>
-        <AppBar title={pageTitlesEnum.REPORTS} className='Reports__appBar' />
+        <AppBar title={t(pageTitlesEnum.REPORTS)} className='Reports__appBar' />
         <ReportsContainer>
           <BusyLoaderWrapper isLoading={isLoading} height='100%'>
             {reports?.length > 0 ? (
@@ -45,7 +46,7 @@ function Reports(): React.FunctionComponentElement<React.ReactNode> {
                       value={searchValue}
                       onChange={handleSearchChange}
                       css={{ width: 380 }}
-                      placeholder='Search'
+                      placeholder={t('reports.searchPlaceholder')}
                     />
                   </Box>
                   <Link
@@ -57,7 +58,7 @@ function Reports(): React.FunctionComponentElement<React.ReactNode> {
                       leftIcon={<IconPlus color='white' />}
                       color='success'
                     >
-                      New
+                      {t('reports.newReport')}
                     </Button>
                   </Link>
                 </Box>
@@ -74,7 +75,7 @@ function Reports(): React.FunctionComponentElement<React.ReactNode> {
                     <>
                       <ReportsNoResultsContainer>
                         <Text css={{ textAlign: 'center' }} size='$4'>
-                          No search results
+                          {t('reports.noSearchResults')}
                         </Text>
                       </ReportsNoResultsContainer>
                       {reports.map((report: any) => (
@@ -100,7 +101,7 @@ function Reports(): React.FunctionComponentElement<React.ReactNode> {
                       color='success'
                       leftIcon={<IconPlus color='white' />}
                     >
-                      Create New Report
+                      {t('reports.createNewReport')}
                     </Button>
                   </Link>
                 </Box>

@@ -355,13 +355,29 @@ class NetworkService {
    */
   public async parseResponse<T>(response: Response): Promise<T> {
     try {
+      // Check if response body has already been read
+      if (response.bodyUsed) {
+        console.warn('Response body has already been read');
+        throw new Error('Response body has already been read');
+      }
+
       const data = await response.json();
       if (response.ok) {
         return data;
       } else {
-        return Promise.reject(new Error(data.message));
+        return Promise.reject(
+          new Error(
+            data.message || `HTTP ${response.status}: ${response.statusText}`,
+          ),
+        );
       }
     } catch (error) {
+      // If it's a response body already read error, provide a more helpful message
+      if (error.message === 'Response body has already been read') {
+        throw new Error(
+          'Network response processing error: response body already consumed',
+        );
+      }
       throw error;
     }
   }
@@ -374,7 +390,8 @@ class NetworkService {
     if (response.status === 401) {
       if (endpoint === `${ENDPOINTS.AUTH.BASE}/${ENDPOINTS.AUTH.REFRESH}`) {
         this.removeAuthToken();
-        return this.parseResponse<T>(response);
+        // For 401 errors, don't try to parse the response body
+        throw new Error('Authentication failed: Invalid credentials');
       }
       // Refresh token
       const token = (await this.refreshToken()).body;
@@ -383,7 +400,13 @@ class NetworkService {
         return refetch();
       }
     }
-    return this.parseResponse<T>(response);
+
+    // Only parse response if it's not a 401 error
+    if (response.status !== 401) {
+      return this.parseResponse<T>(response);
+    } else {
+      throw new Error('Authentication failed: Please login again');
+    }
   }
 }
 

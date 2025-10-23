@@ -7,12 +7,28 @@ import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 import ControlPopover from 'components/ControlPopover/ControlPopover';
 import { Button, Icon } from 'components/kit';
 
+import pageTitlesEnum from 'config/pageTitles/pageTitles';
+import { useTranslation } from 'config/i18n';
+
 import { PipelineStatusEnum } from 'modules/core/engine/types';
 import { IExplorerBarProps } from 'modules/BaseExplorer/types';
 
 import './ExplorerBar.scss';
 
+const EXPLORER_TITLE_KEY_BY_NAME: Record<string, string> = {
+  'metrics explorer': pageTitlesEnum.METRICS_EXPLORER,
+  'metrics explorer v2': pageTitlesEnum.METRICS_EXPLORER_V2,
+  'params explorer': pageTitlesEnum.PARAMS_EXPLORER,
+  'images explorer': pageTitlesEnum.IMAGES_EXPLORER,
+  'scatters explorer': pageTitlesEnum.SCATTERS_EXPLORER,
+  'figures explorer': pageTitlesEnum.FIGURES_EXPLORER,
+  'audios explorer': pageTitlesEnum.AUDIOS_EXPLORER,
+  'text explorer': pageTitlesEnum.TEXT_EXPLORER,
+  'runs explorer': pageTitlesEnum.RUNS_EXPLORER,
+};
+
 function ExplorerBar(props: IExplorerBarProps) {
+  const { t } = useTranslation();
   const status = props.engine.useStore(props.engine.pipeline.statusSelector);
 
   const disableResetControls = React.useMemo(
@@ -36,13 +52,28 @@ function ExplorerBar(props: IExplorerBarProps) {
 
   const isExecuting = status === PipelineStatusEnum.Executing;
 
+  const explorerTitle = React.useMemo(() => {
+    if (!props.explorerName) {
+      return '';
+    }
+    if (props.explorerName.includes('.')) {
+      return t(props.explorerName);
+    }
+    const mappedKey =
+      EXPLORER_TITLE_KEY_BY_NAME[props.explorerName.toLowerCase()];
+    if (mappedKey) {
+      return t(mappedKey);
+    }
+    return props.explorerName;
+  }, [props.explorerName, t]);
+
   return (
     <div>
-      <AppBar title={props.explorerName} disabled={isExecuting}>
+      <AppBar title={explorerTitle} disabled={isExecuting}>
         <div className='ExplorerBar__menu'>
           <ErrorBoundary>
             <ControlPopover
-              title='Menu'
+              title={t('common.menu')}
               anchor={({ onAnchorClick }) => (
                 <Button
                   withOnlyIcon
@@ -63,7 +94,7 @@ function ExplorerBar(props: IExplorerBarProps) {
                     disabled={disableResetControls}
                     onClick={resetToSystemDefaults}
                   >
-                    Reset Controls to System Defaults
+                    {t('common.resetControls')}
                   </MenuItem>
                   <a
                     href={props.documentationLink}
@@ -71,7 +102,7 @@ function ExplorerBar(props: IExplorerBarProps) {
                     rel='noreferrer'
                     className='ExplorerBar__popover__docsLink'
                   >
-                    <MenuItem>Explorer Documentation</MenuItem>
+                    <MenuItem>{t('common.explorerDocumentation')}</MenuItem>
                   </a>
                 </div>
               }

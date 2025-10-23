@@ -47,10 +47,12 @@ function createAPIRequestWrapper<ResponseDataType>(
           .then(async (response) => {
             try {
               if (response.status >= 400) {
-                const body = await response.json();
-
+                // For error responses, don't read the body here to avoid double reading
                 if (typeof exceptionHandler === 'function') {
-                  exceptionHandler(body);
+                  exceptionHandler({
+                    status: response.status,
+                    statusText: response.statusText,
+                  });
                 }
 
                 return await checkCredentials<ResponseDataType>(
@@ -329,13 +331,38 @@ function refreshToken() {
  */
 async function parseResponse<T>(response: Response): Promise<T> {
   try {
+    // 检查响应是否已经被读取过
+    if (response.bodyUsed) {
+      console.warn('Response body has already been read');
+      throw new Error('Response body has already been read');
+    }
+
     const data = await response.json();
     if (response.ok) {
       return data;
     } else {
-      return Promise.reject(new Error(data.message));
+      // 提供更友好的错误信息
+      let errorMessage =
+        data.message || `HTTP ${response.status}: ${response.statusText}`;
+
+      // 处理特定的错误情况
+      if (response.status === 404) {
+        errorMessage = 'Resource not found. Please check if the data exists.';
+      } else if (response.status === 403) {
+        errorMessage = 'Access denied. Please check your permissions.';
+      } else if (response.status === 500) {
+        errorMessage = 'Server error. Please try again later.';
+      }
+
+      return Promise.reject(new Error(errorMessage));
     }
   } catch (error) {
+    // 如果是响应体已被读取的错误，提供更友好的错误信息
+    if (error.message === 'Response body has already been read') {
+      throw new Error(
+        'Network response processing error: response body already consumed',
+      );
+    }
     throw error;
   }
 }
@@ -349,22 +376,34 @@ async function checkCredentials<T>(
     if (endpoint === `${ENDPOINTS.AUTH.BASE}/${ENDPOINTS.AUTH.REFRESH}`) {
       removeAuthToken();
       window.location.assign(`${window.location.origin}/sign-in`);
-      return parseResponse<T>(response);
+      // 对于401错误，直接返回错误，不尝试解析响应
+      throw new Error('Authentication failed: Invalid credentials');
     }
     if (localStorage.getItem('refreshing') !== 'true') {
       localStorage.setItem('refreshing', 'true');
-      // Refresh token
-      const token = await refreshToken().call();
-      if (token) {
-        setAuthToken(token);
+      try {
+        // Refresh token
+        const token = await refreshToken().call();
+        if (token) {
+          setAuthToken(token);
+          localStorage.setItem('refreshing', 'false');
+          window.location.reload();
+          return refetch();
+        }
+      } catch (error) {
+        console.error('Token refresh failed:', error);
+      } finally {
         localStorage.setItem('refreshing', 'false');
-        window.location.reload();
-        return refetch();
       }
-      localStorage.setItem('refreshing', 'false');
     }
   }
-  return parseResponse<T>(response);
+
+  // 只有在非401错误时才尝试解析响应
+  if (response.status !== 401) {
+    return parseResponse<T>(response);
+  } else {
+    throw new Error('Authentication failed: Please login again');
+  }
 }
 
 const API = {

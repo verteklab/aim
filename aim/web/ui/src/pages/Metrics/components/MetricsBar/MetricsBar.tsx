@@ -12,6 +12,7 @@ import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 import ConfirmModal from 'components/ConfirmModal/ConfirmModal';
 
 import { DOCUMENTATIONS } from 'config/references';
+import { useTranslation } from 'config/i18n';
 
 import { IMetricsBarProps } from 'types/pages/metrics/components/MetricsBar/MetricsBar';
 
@@ -28,6 +29,7 @@ function MetricsBar({
   onLiveUpdateConfigChange,
 }: IMetricsBarProps): React.FunctionComponentElement<React.ReactNode> {
   const [popover, setPopover] = React.useState<string>('');
+  const { t } = useTranslation();
 
   const route = useRouteMatch<any>();
 
@@ -46,7 +48,7 @@ function MetricsBar({
 
   return (
     <ErrorBoundary>
-      <AppBar title={title} disabled={disabled}>
+      <AppBar title={title ? t(title) : ''} disabled={disabled}>
         <LiveUpdateSettings
           {...liveUpdateConfig}
           onLiveUpdateConfigChange={onLiveUpdateConfigChange}
@@ -54,11 +56,11 @@ function MetricsBar({
         {route.params.appId ? (
           <ErrorBoundary>
             <ControlPopover
-              title='Bookmark'
+              title={t('bookmarks.bookmark')}
               anchor={({ onAnchorClick }) => (
                 <Button color='secondary' size='small' onClick={onAnchorClick}>
                   <Text size={14} className='MetricsBar__item__bookmark__Text'>
-                    Bookmark
+                    {t('bookmarks.bookmark')}
                   </Text>
                   <Icon
                     name='bookmarks'
@@ -69,10 +71,10 @@ function MetricsBar({
               component={
                 <div className='MetricsBar__popover'>
                   <MenuItem onClick={() => handleBookmarkClick('create')}>
-                    Create Bookmark
+                    {t('bookmarks.create')}
                   </MenuItem>
                   <MenuItem onClick={() => handleBookmarkClick('update')}>
-                    Update Bookmark
+                    {t('bookmarks.update')}
                   </MenuItem>
                 </div>
               }
@@ -86,7 +88,7 @@ function MetricsBar({
             onClick={() => handleBookmarkClick('create')}
           >
             <Text size={14} className='MetricsBar__item__bookmark__Text'>
-              Bookmark
+              {t('bookmarks.bookmark')}
             </Text>
             <Icon
               fontSize={14}
@@ -98,7 +100,7 @@ function MetricsBar({
         <div className='MetricsBar__menu'>
           <ErrorBoundary>
             <ControlPopover
-              title='Menu'
+              title={t('common.menu')}
               anchor={({ onAnchorClick }) => (
                 <Button
                   withOnlyIcon
@@ -116,14 +118,14 @@ function MetricsBar({
               component={
                 <div className='MetricsBar__popover'>
                   <MenuItem onClick={onResetConfigData}>
-                    Reset Controls to System Defaults
+                    {t('common.resetControls')}
                   </MenuItem>
                   <a
                     href={DOCUMENTATIONS.EXPLORERS[explorerName].MAIN}
                     target='_blank'
                     rel='noreferrer'
                   >
-                    <MenuItem>Explorer Documentation</MenuItem>
+                    <MenuItem>{t('common.explorerDocumentation')}</MenuItem>
                   </a>
                 </div>
               }
@@ -141,11 +143,11 @@ function MetricsBar({
           open={popover === 'update'}
           onCancel={handleClosePopover}
           onSubmit={handleBookmarkUpdate}
-          text='Are you sure you want to update bookmark?'
+          text={t('bookmarks.updateConfirmText')}
           icon={<Icon name='check' />}
-          title='Update bookmark'
+          title={t('bookmarks.updateConfirmTitle')}
           statusType='success'
-          confirmBtnText='Update'
+          confirmBtnText={t('bookmarks.updateConfirmButton')}
         />
       </AppBar>
     </ErrorBoundary>

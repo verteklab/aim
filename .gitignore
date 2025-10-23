@@ -125,3 +125,5 @@ coverage_html_report/
 aim/storage/**/*.cpp
 
 .ruff_cache
+.history/
+/node_modules

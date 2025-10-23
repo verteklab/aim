@@ -20,6 +20,7 @@ import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 import AutocompleteInput from 'components/AutocompleteInput';
 
 import { ANALYTICS_EVENT_KEYS } from 'config/analytics/analyticsKeysMap';
+import { useTranslation } from 'config/i18n';
 
 import metricAppModel from 'services/models/metrics/metricsAppModel';
 import { trackEvent } from 'services/analytics';
@@ -40,6 +41,7 @@ function SelectForm({
   toggleSelectAdvancedMode,
   onSearchQueryCopy,
 }: ISelectFormProps): React.FunctionComponentElement<React.ReactNode> {
+  const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = React.useState<any>(null);
   const [searchValue, setSearchValue] = React.useState<string>('');
   const searchRef: any = React.useRef<React.MutableRefObject<any>>(null);
@@ -211,9 +213,9 @@ function SelectForm({
                             ...params.inputProps,
                             value: searchValue,
                             onChange: handleSearchInputChange,
+                            placeholder: t('common.search'),
                           }}
                           spellCheck={false}
-                          placeholder='Search'
                           autoFocus={true}
                           className='Metrics__SelectForm__metric__select'
                         />
@@ -250,7 +252,7 @@ function SelectForm({
                   />
                   {selectedMetricsData?.options.length === 0 && (
                     <Text tint={50} size={14} weight={400}>
-                      No metrics are selected
+                      {t('metrics.selectForm.emptySelection')}
                     </Text>
                   )}
                   <Box
@@ -316,10 +318,10 @@ function SelectForm({
             className='Metrics__SelectForm__search__button'
             onClick={requestIsPending ? handleRequestAbort : handleMetricSearch}
           >
-            {requestIsPending ? 'Cancel' : 'Search'}
+            {requestIsPending ? t('common.cancel') : t('common.search')}
           </Button>
           <div className='Metrics__SelectForm__search__actions'>
-            <Tooltip title='Reset query'>
+            <Tooltip title={t('metrics.selectForm.reset')}>
               <div>
                 <Button
                   onClick={handleResetSelectForm}
@@ -333,8 +335,8 @@ function SelectForm({
             <Tooltip
               title={
                 selectedMetricsData?.advancedMode
-                  ? 'Switch to default mode'
-                  : 'Enable advanced search mode '
+                  ? t('metrics.selectForm.switchToDefault')
+                  : t('metrics.selectForm.switchToAdvanced')
               }
             >
               <div>
@@ -348,7 +350,7 @@ function SelectForm({
                 </Button>
               </div>
             </Tooltip>
-            <Tooltip title='Copy search query'>
+            <Tooltip title={t('metrics.selectForm.copyQuery')}>
               <div>
                 <Button
                   onClick={onSearchQueryCopy}

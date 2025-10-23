@@ -249,6 +249,7 @@ function Column({
         }}
         ref={columnRef}
       >
+        {/* 第一行header */}
         {topHeader && (
           <div
             className='Table__cell Table__cell--header Table__cell--topHeader'
@@ -269,6 +270,7 @@ function Column({
             )}
           </div>
         )}
+        {/* 第二行header */}
         <div
           className='Table__cell Table__cell--header'
           style={{ minWidth: col.minWidth }}

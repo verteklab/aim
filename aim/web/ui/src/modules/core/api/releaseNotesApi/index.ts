@@ -11,12 +11,22 @@ const api = new NetworkService(`${ENDPOINTS.RELEASE_NOTES.BASE}`);
  * @returns {Promise<IReleaseNote[]>}
  */
 async function fetchReleaseNotes(): Promise<IReleaseNote[]> {
-  return (
-    await api.makeAPIGetRequest(ENDPOINTS.RELEASE_NOTES.GET, {
-      query_params: { per_page: 10 },
-      headers: {},
-    })
-  ).body;
+  try {
+    return (
+      await api.makeAPIGetRequest(ENDPOINTS.RELEASE_NOTES.GET, {
+        query_params: { per_page: 10 },
+        headers: {
+          Accept: 'application/vnd.github.v3+json',
+          'User-Agent': 'AIM-UI/3.29.1',
+          'X-GitHub-Api-Version': '2022-11-28',
+        },
+      })
+    ).body;
+  } catch (error) {
+    console.warn('Failed to fetch release notes from GitHub API:', error);
+    // Return empty array as fallback
+    return [];
+  }
 }
 
 /**
@@ -25,11 +35,20 @@ async function fetchReleaseNotes(): Promise<IReleaseNote[]> {
  * @returns {Promise<IReleaseNote>}
  */
 async function fetchLatestRelease(): Promise<IReleaseNote> {
-  return (
-    await api.makeAPIGetRequest(`${ENDPOINTS.RELEASE_NOTES.GET}/latest}`, {
-      headers: {},
-    })
-  ).body;
+  try {
+    return (
+      await api.makeAPIGetRequest(`${ENDPOINTS.RELEASE_NOTES.GET}/latest`, {
+        headers: {
+          Accept: 'application/vnd.github.v3+json',
+          'User-Agent': 'AIM-UI/3.29.1',
+          'X-GitHub-Api-Version': '2022-11-28',
+        },
+      })
+    ).body;
+  } catch (error) {
+    console.warn('Failed to fetch latest release from GitHub API:', error);
+    throw error;
+  }
 }
 
 /**
@@ -38,11 +57,20 @@ async function fetchLatestRelease(): Promise<IReleaseNote> {
  * @returns {Promise<IReleaseNote>}
  */
 async function fetchReleaseById(id: string): Promise<IReleaseNote> {
-  return (
-    await api.makeAPIGetRequest(`${ENDPOINTS.RELEASE_NOTES.GET}/${id}}`, {
-      headers: {},
-    })
-  ).body;
+  try {
+    return (
+      await api.makeAPIGetRequest(`${ENDPOINTS.RELEASE_NOTES.GET}/${id}`, {
+        headers: {
+          Accept: 'application/vnd.github.v3+json',
+          'User-Agent': 'AIM-UI/3.29.1',
+          'X-GitHub-Api-Version': '2022-11-28',
+        },
+      })
+    ).body;
+  } catch (error) {
+    console.warn('Failed to fetch release by ID from GitHub API:', error);
+    throw error;
+  }
 }
 
 /**
@@ -52,12 +80,23 @@ async function fetchReleaseById(id: string): Promise<IReleaseNote> {
  */
 
 async function fetchReleaseByTagName(tagName: string): Promise<IReleaseNote> {
-  return (
-    await api.makeAPIGetRequest(
-      `${ENDPOINTS.RELEASE_NOTES.GET}${ENDPOINTS.RELEASE_NOTES.GET_BY_TAG_NAME}/${tagName}`,
-      { headers: {} },
-    )
-  ).body;
+  try {
+    return (
+      await api.makeAPIGetRequest(
+        `${ENDPOINTS.RELEASE_NOTES.GET}${ENDPOINTS.RELEASE_NOTES.GET_BY_TAG_NAME}/${tagName}`,
+        {
+          headers: {
+            Accept: 'application/vnd.github.v3+json',
+            'User-Agent': 'AIM-UI/3.29.1',
+            'X-GitHub-Api-Version': '2022-11-28',
+          },
+        },
+      )
+    ).body;
+  } catch (error) {
+    console.warn('Failed to fetch release by tag name from GitHub API:', error);
+    throw error;
+  }
 }
 
 export {

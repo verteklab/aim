@@ -37,7 +37,7 @@ const minWidthSizes = {
   xSmall: 'auto',
   small: '4.375rem',
   medium: '4.375rem',
-  large: '4.375rem',
+  large: '5.375rem',
 };
 
 const paddingSizes = {

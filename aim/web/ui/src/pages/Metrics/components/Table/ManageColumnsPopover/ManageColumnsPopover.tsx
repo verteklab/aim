@@ -13,6 +13,7 @@ import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 
 import { HideColumnsEnum } from 'config/enums/tableEnums';
 import { TABLE_DEFAULT_CONFIG } from 'config/table/tableConfigs';
+import { useTranslation } from 'config/i18n';
 
 import { ITableColumn } from 'types/pages/metrics/components/TableColumns/TableColumns';
 
@@ -47,6 +48,7 @@ function ManageColumnsPopover({
   onManageColumns,
   onColumnsVisibilityChange,
 }: IManageColumnsPopoverProps) {
+  const { t } = useTranslation();
   const [state, setState] = React.useState<any>(initialData);
   const [searchKey, setSearchKey] = React.useState<string>('');
   const [draggingItemId, setDraggingItemId] = React.useState<string>('');
@@ -234,7 +236,9 @@ function ManageColumnsPopover({
   return (
     <ErrorBoundary>
       <ControlPopover
-        title='Manage table columns'
+        title={t('table.manageColumns.title', {
+          defaultValue: 'Manage table columns',
+        })}
         anchorOrigin={{
           vertical: 'top',
           horizontal: 'left',
@@ -255,7 +259,9 @@ function ManageColumnsPopover({
           >
             <Icon name='manage-column' />
             <Text size={14} tint={100}>
-              Manage Columns
+              {t('table.manageColumns.trigger', {
+                defaultValue: 'Manage Columns',
+              })}
             </Text>
           </Button>
         )}
@@ -263,7 +269,11 @@ function ManageColumnsPopover({
           <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
             <div ref={ref} className='ManageColumns__container'>
               <div className='ColumnList__container'>
-                <div className='ColumnList__title'>Pinned to the left</div>
+                <div className='ColumnList__title'>
+                  {t('table.manageColumns.pinnedLeft', {
+                    defaultValue: 'Pinned to the left',
+                  })}
+                </div>
                 <Droppable droppableId='left'>
                   {(provided, snapshot) => (
                     <div
@@ -311,10 +321,14 @@ function ManageColumnsPopover({
                     </div>
                     <InputBase
                       fullWidth
-                      placeholder='Search'
+                      placeholder={t('common.search')}
                       value={searchKey}
                       onChange={onSearchKeyChange}
-                      inputProps={{ 'aria-label': 'search' }}
+                      inputProps={{
+                        'aria-label': t('table.manageColumns.searchAria', {
+                          defaultValue: 'search columns',
+                        }),
+                      }}
                     />
                   </div>
                 </div>
@@ -360,7 +374,11 @@ function ManageColumnsPopover({
                 </Droppable>
               </div>
               <div className='ColumnList__container'>
-                <div className='ColumnList__title'>Pinned to the right</div>
+                <div className='ColumnList__title'>
+                  {t('table.manageColumns.pinnedRight', {
+                    defaultValue: 'Pinned to the right',
+                  })}
+                </div>
                 <Droppable droppableId='right'>
                   {(provided, snapshot) => (
                     <div
@@ -417,7 +435,9 @@ function ManageColumnsPopover({
                   }
                 >
                   <Text size={12} tint={100}>
-                    reset columns order
+                    {t('table.manageColumns.resetOrder', {
+                      defaultValue: 'Reset columns order',
+                    })}
                   </Text>
                 </Button>
               </div>
@@ -443,7 +463,13 @@ function ManageColumnsPopover({
                         }
                       />
                       <Text size={12} tint={100}>
-                        {hideSystemMetrics ? 'show' : 'hide'} system metrics
+                        {hideSystemMetrics
+                          ? t('table.manageColumns.showSystemMetrics', {
+                              defaultValue: 'show system metrics',
+                            })
+                          : t('table.manageColumns.hideSystemMetrics', {
+                              defaultValue: 'hide system metrics',
+                            })}
                       </Text>
                     </Button>
                     <Divider
@@ -461,7 +487,9 @@ function ManageColumnsPopover({
                 >
                   <Icon name='eye-show-outline' color='#1473e6' />
                   <Text size={12} tint={100}>
-                    show all
+                    {t('table.manageColumns.showAll', {
+                      defaultValue: 'show all',
+                    })}
                   </Text>
                 </Button>
                 <Button
@@ -471,7 +499,9 @@ function ManageColumnsPopover({
                 >
                   <Icon name='eye-outline-hide' />
                   <Text size={12} tint={100}>
-                    hide all
+                    {t('table.manageColumns.hideAll', {
+                      defaultValue: 'hide all',
+                    })}
                   </Text>
                 </Button>
               </div>

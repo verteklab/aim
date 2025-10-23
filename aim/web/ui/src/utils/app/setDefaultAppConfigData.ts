@@ -49,7 +49,6 @@ export default function setDefaultAppConfigData<M extends State>({
   ///
 
   const defaultConfig: IAppModelConfig = { liveUpdate: luConfig };
-
   if (grouping) {
     defaultConfig.grouping = getStateFromUrl('grouping') ?? {};
   }
@@ -58,6 +57,7 @@ export default function setDefaultAppConfigData<M extends State>({
       ['metrics', 'params', 'images'],
       getStateFromUrl('select'),
     );
+
     defaultConfig.select = compatibleSelectConfig ?? {};
   }
   if (components.charts) {
