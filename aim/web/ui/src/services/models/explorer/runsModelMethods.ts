@@ -108,7 +108,6 @@ function getRunsModelMethods(
   let updateTableTimeoutId: number;
 
   function initialize(appId: string = '') {
-    debugger;
     model.init();
     const state: Partial<IAppModelState> = {};
     if (grouping) {
