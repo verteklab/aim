@@ -32,8 +32,12 @@ function getValueFromTree(
   path: string[],
 ): TranslationValue | undefined {
   return path.reduce<TranslationValue | undefined>((acc, segment) => {
-    if (acc && typeof acc === 'object') {
-      return (acc as TranslationTree)[segment] as TranslationValue;
+    if (
+      acc &&
+      typeof acc === 'object' &&
+      Object.prototype.hasOwnProperty.call(acc, segment)
+    ) {
+      return (acc as Record<string, unknown>)[segment] as TranslationValue;
     }
     return undefined;
   }, tree);

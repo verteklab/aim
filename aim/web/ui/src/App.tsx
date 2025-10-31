@@ -21,7 +21,7 @@ import routes from 'routes/routes';
 import projectsModel from 'services/models/projects/projectsModel';
 
 import { IProjectsModelState } from './types/services/models/projects/projectsModel';
-import { preloadFonts } from './utils/fontLoader';
+// import { preloadFonts } from './utils/fontLoader';
 import { preloadCriticalStyles, initStyleLoader } from './utils/styleLoader';
 import { initScssLoader } from './utils/scssLoader';
 import { initControlPopoverLoader } from './utils/controlPopoverLoader';
@@ -59,16 +59,16 @@ function App(): React.FunctionComponentElement<React.ReactNode> {
     initControlPopoverLoader();
 
     // 预加载字体和样式
-    Promise.all([
-      preloadFonts().catch(() => {
-        // 字体加载失败时静默处理，不影响应用正常运行
-      }),
-      preloadCriticalStyles().catch(() => {
-        // 样式加载失败时静默处理，不影响应用正常运行
-      }),
-    ]).catch(() => {
-      // 整体加载失败时静默处理
-    });
+    // Promise.all([
+    //   preloadFonts().catch(() => {
+    //     // 字体加载失败时静默处理，不影响应用正常运行
+    //   }),
+    //   preloadCriticalStyles().catch(() => {
+    //     // 样式加载失败时静默处理，不影响应用正常运行
+    //   }),
+    // ]).catch(() => {
+    //   // 整体加载失败时静默处理
+    // });
   }, []);
 
   return (

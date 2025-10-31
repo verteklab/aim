@@ -52,7 +52,7 @@ function createAPIRequestWrapper<ResponseDataType>(
                   exceptionHandler({
                     status: response.status,
                     statusText: response.statusText,
-                  });
+                  } as any);
                 }
 
                 return await checkCredentials<ResponseDataType>(
