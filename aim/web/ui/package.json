@@ -92,7 +92,7 @@
     "serve:micro": "serve -s build -l 3000",
     "deploy:micro": "npm run build:micro && npm run serve:micro"
   },
-  "homepage": "/static-files/",
+  "homepage": "/",
   "browserslist": {
     "production": [
       ">0.2%",

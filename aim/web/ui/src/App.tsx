@@ -33,9 +33,12 @@ import './App.scss';
 const getMonacoPath = () => {
   const win = window as any;
   if (win.__POWERED_BY_QIANKUN__ && win.__INJECTED_PUBLIC_PATH_BY_QIANKUN__) {
-    return `${win.__INJECTED_PUBLIC_PATH_BY_QIANKUN__}static-files/vs`;
+    return `${win.__INJECTED_PUBLIC_PATH_BY_QIANKUN__}vs`;
   }
-  return `${getBasePath()}/static-files/vs`;
+  if (win.externalPublicPath) {
+    return `${win.externalPublicPath}vs`;
+  }
+  return `${getBasePath()}/vs`;
 };
 
 loader.config({
