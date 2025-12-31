@@ -125,6 +125,10 @@ const zh = {
         last: '最后值',
       },
     },
+    compare: {
+      button: '对比',
+      newTab: '在新标签页中对比',
+    },
   },
 };
 

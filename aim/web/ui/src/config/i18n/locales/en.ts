@@ -125,6 +125,10 @@ const en = {
         last: 'Last Value',
       },
     },
+    compare: {
+      button: 'Compare',
+      newTab: 'Compare in a new tab',
+    },
   },
 };
 

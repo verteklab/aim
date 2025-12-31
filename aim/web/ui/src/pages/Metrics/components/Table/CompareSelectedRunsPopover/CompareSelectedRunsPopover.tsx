@@ -1,7 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { MenuItem, Tooltip } from '@material-ui/core';
+import { MenuItem } from '@material-ui/core';
+// import { Tooltip } from '@material-ui/core'; // Uncomment when enabling the new tab feature
 
 import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 import ControlPopover from 'components/ControlPopover/ControlPopover';
@@ -11,6 +12,7 @@ import { IconName } from 'components/kit/Icon';
 import { getBasePath } from 'config/config';
 import { EXPLORE_SELECTED_RUNS_CONFIG } from 'config/table/tableConfigs';
 import { ANALYTICS_EVENT_KEYS } from 'config/analytics/analyticsKeysMap';
+import { useTranslation } from 'config/i18n';
 
 import getUpdatedUrl from 'modules/core/utils/getUpdatedUrl';
 
@@ -30,6 +32,7 @@ function CompareSelectedRunsPopover({
   buttonText,
 }: ICompareSelectedRunsPopoverProps): React.FunctionComponentElement<React.ReactNode> {
   const history = useHistory();
+  const { t } = useTranslation();
 
   const onCompare: (
     e: React.MouseEvent<HTMLElement>,
@@ -111,7 +114,8 @@ function CompareSelectedRunsPopover({
           >
             <Icon fontSize={18} name='compare' />
             <Text size={14} tint={disabled ? 50 : 100}>
-              {buttonText ?? 'Compare'}
+              {buttonText ??
+                t('table.compare.button', { defaultValue: 'Compare' })}
             </Text>
           </Button>
         )}
@@ -132,7 +136,7 @@ function CompareSelectedRunsPopover({
                   >
                     {item}
                   </Text>
-                  <Tooltip title={`${buttonText ?? 'Compare'} in a new tab`}>
+                  {/* <Tooltip title={t('table.compare.newTab', { defaultValue: 'Compare in a new tab' })}>
                     <div>
                       <Icon
                         box
@@ -141,7 +145,7 @@ function CompareSelectedRunsPopover({
                         name='new-tab'
                       />
                     </div>
-                  </Tooltip>
+                  </Tooltip> */}
                 </MenuItem>
               ),
             )}
