@@ -7,6 +7,7 @@ import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 import DictVisualizer from 'components/kit/DictVisualizer';
 
 import { ANALYTICS_EVENT_KEYS } from 'config/analytics/analyticsKeysMap';
+import { useTranslation } from 'config/i18n';
 
 import * as analytics from 'services/analytics';
 
@@ -16,6 +17,7 @@ function RunDetailParamsTab({
   runParams,
   isRunInfoLoading,
 }: IRunDetailParamsTabProps): React.FunctionComponentElement<React.ReactNode> {
+  const { t } = useTranslation();
   React.useEffect(() => {
     analytics.pageView(ANALYTICS_EVENT_KEYS.runDetails.tabs.params.tabView);
   }, []);
@@ -37,7 +39,9 @@ function RunDetailParamsTab({
           <IllustrationBlock
             size='xLarge'
             className='RunDetailTabLoader'
-            title='No Params'
+            title={t('runDetail.params.noParams', {
+              defaultValue: 'No Params',
+            })}
           />
         )}
       </BusyLoaderWrapper>

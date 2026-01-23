@@ -4,14 +4,21 @@ import moment from 'moment';
 import { Text, Card, Icon } from 'components/kit';
 
 import { DATE_GIT_COMMIT } from 'config/dates/dates';
+import { useTranslation } from 'config/i18n';
 
 import { IGitInfoCardProps } from './GitInfoCard';
 
 import './GitInfoCard.scss';
 
 function GitInfoCard(props: IGitInfoCardProps) {
+  const { t } = useTranslation();
   return (
-    <Card title='Git Info Card' className='GitInfoCard RunOverviewTab__cardBox'>
+    <Card
+      title={t('runDetail.overview.gitInfoCard', {
+        defaultValue: 'Git Info Card',
+      })}
+      className='GitInfoCard RunOverviewTab__cardBox'
+    >
       <div className='InfoSection ScrollBar__hidden flex fjb'>
         <div className='InfoCard flex fdc'>
           <Text
@@ -21,7 +28,7 @@ function GitInfoCard(props: IGitInfoCardProps) {
             size={12}
             color='primary'
           >
-            Branch
+            {t('runDetail.overview.branch', { defaultValue: 'Branch' })}
           </Text>
           <div className='InfoCardValue flex fac'>
             <Icon name='branch' fontSize={14} />
@@ -43,7 +50,7 @@ function GitInfoCard(props: IGitInfoCardProps) {
             size={12}
             color='primary'
           >
-            Author
+            {t('runDetail.overview.author', { defaultValue: 'Author' })}
           </Text>
           <div className='InfoCardValue flex fac'>
             <Icon name='avatar' fontSize={14} />
@@ -65,7 +72,7 @@ function GitInfoCard(props: IGitInfoCardProps) {
             size={12}
             color='primary'
           >
-            Hash
+            {t('runDetail.overview.hash', { defaultValue: 'Hash' })}
           </Text>
           <div className='InfoCardValue flex fac'>
             <Icon name='hash' fontSize={14} />
@@ -87,7 +94,9 @@ function GitInfoCard(props: IGitInfoCardProps) {
             size={12}
             color='primary'
           >
-            Timestamp
+            {t('runDetail.overview.timestamp', {
+              defaultValue: 'Timestamp',
+            })}
           </Text>
           <div className='InfoCardValue flex fac'>
             <Icon name='time' fontSize={14} />

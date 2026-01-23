@@ -15,6 +15,7 @@ import { Spinner } from 'components/kit';
 
 import { ANALYTICS_EVENT_KEYS } from 'config/analytics/analyticsKeysMap';
 import { RequestStatusEnum } from 'config/enums/requestStatusEnum';
+import { useTranslation } from 'config/i18n';
 
 import runDetailAppModel from 'services/models/runs/runDetailAppModel';
 import * as analytics from 'services/analytics';
@@ -34,6 +35,7 @@ function RunLogsTab({
   inProgress,
   updatedLogsCount,
 }: IRunLogsTabProps) {
+  const { t } = useTranslation();
   const liveUpdate = React.useRef<{ intervalId: number } | null>(null);
   const logsContainerRef = React.useRef<any>(null);
   const listRef = React.useRef<any>({});
@@ -261,7 +263,7 @@ function RunLogsTab({
           <IllustrationBlock
             size='xLarge'
             className='RunDetailTabLoader'
-            title='No Logs'
+            title={t('runDetail.logs.noLogs', { defaultValue: 'No Logs' })}
           />
         )}
       </BusyLoaderWrapper>

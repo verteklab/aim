@@ -19,7 +19,8 @@ import IllustrationBlock from 'components/IllustrationBlock/IllustrationBlock';
 import pageTitlesEnum from 'config/pageTitles/pageTitles';
 import { ResizeModeEnum } from 'config/enums/tableEnums';
 import { RowHeightSize } from 'config/table/tableConfigs';
-import GroupingPopovers, {
+import {
+  getGroupingPopovers,
   GroupNameEnum,
 } from 'config/grouping/GroupingPopovers';
 import { RequestStatusEnum } from 'config/enums/requestStatusEnum';
@@ -28,6 +29,7 @@ import {
   Request_Illustrations,
 } from 'config/illustrationConfig/illustrationConfig';
 import { ANALYTICS_EVENT_KEYS } from 'config/analytics/analyticsKeysMap';
+import { useTranslation } from 'config/i18n';
 
 import SelectForm from 'pages/ImagesExplore/components/SelectForm/SelectForm';
 import Controls from 'pages/ImagesExplore/components/Controls/Controls';
@@ -50,6 +52,7 @@ import ImagesExploreAppBar from './components/ImagesExploreAppBar/ImagesExploreA
 import './ImagesExplore.scss';
 
 function ImagesExplore(): React.FunctionComponentElement<React.ReactNode> {
+  const { t } = useTranslation();
   const route = useRouteMatch<any>();
   const history = useHistory();
   const imagesExploreData = useModel<any>(imagesExploreAppModel);
@@ -252,7 +255,7 @@ function ImagesExplore(): React.FunctionComponentElement<React.ReactNode> {
                 searchButtonDisabled={imagesExploreData?.searchButtonDisabled}
               />
               <Grouping
-                groupingPopovers={GroupingPopovers.filter(
+                groupingPopovers={getGroupingPopovers(t).filter(
                   (g) => g.groupName === GroupNameEnum.ROW,
                 )}
                 isDisabled={isProgressBarVisible}

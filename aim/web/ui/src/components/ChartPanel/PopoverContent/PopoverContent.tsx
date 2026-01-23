@@ -10,6 +10,7 @@ import AttachedTagsList from 'components/AttachedTagsList/AttachedTagsList';
 import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 
 import { PathEnum } from 'config/enums/routesEnum';
+import { useTranslation } from 'config/i18n';
 
 import { TooltipAppearanceEnum } from 'modules/BaseExplorer/components/Controls/ConfigureTooltip';
 
@@ -34,6 +35,7 @@ const PopoverContent = React.forwardRef(function PopoverContent(
   props: IPopoverContentProps,
   ref,
 ): React.FunctionComponentElement<React.ReactNode> {
+  const { t } = useTranslation();
   const {
     tooltipContent,
     tooltipAppearance = TooltipAppearanceEnum.Auto,
@@ -66,7 +68,9 @@ const PopoverContent = React.forwardRef(function PopoverContent(
           <ErrorBoundary>
             <div className='PopoverContent__box'>
               <div className='PopoverContent__valueContainer'>
-                <Text>Y: </Text>
+                <Text>
+                  {t('metrics.chartPanel.yAxis', { defaultValue: 'Y: ' })}
+                </Text>
                 <span className='PopoverContent__headerValue'>
                   <Text weight={400}>
                     {isSystemMetric(name) ? formatSystemMetricName(name) : name}
@@ -80,7 +84,9 @@ const PopoverContent = React.forwardRef(function PopoverContent(
                 </span>
               </div>
               <div className='PopoverContent__valueContainer'>
-                <Text>X: </Text>
+                <Text>
+                  {t('metrics.chartPanel.xAxis', { defaultValue: 'X: ' })}
+                </Text>
                 <span className='PopoverContent__headerValue'>
                   <Text weight={400}>{getKeyByAlignment(alignmentConfig)}</Text>
                   {alignmentConfig?.type ===
@@ -127,7 +133,8 @@ const PopoverContent = React.forwardRef(function PopoverContent(
                 {context || null}
               </div>
               <div className='PopoverContent__value'>
-                Value: {focusedState?.yValue}
+                {t('metrics.chartPanel.value', { defaultValue: 'Value: ' })}
+                {focusedState?.yValue}
               </div>
             </div>
           </ErrorBoundary>
@@ -151,9 +158,11 @@ const PopoverContent = React.forwardRef(function PopoverContent(
                 </Text>
               </div>
               <div className='PopoverContent__value'>
-                Step: <strong>{step}</strong>
+                {t('metrics.chartPanel.step', { defaultValue: 'Step: ' })}
+                <strong>{step}</strong>
                 <Text className='PopoverContent__contextValue'>
-                  Index: <strong>{index}</strong>
+                  {t('metrics.chartPanel.index', { defaultValue: 'Index: ' })}
+                  <strong>{index}</strong>
                 </Text>
               </div>
             </div>
@@ -165,7 +174,9 @@ const PopoverContent = React.forwardRef(function PopoverContent(
           <ErrorBoundary>
             <div className='PopoverContent__box'>
               <div className='PopoverContent__valueContainer'>
-                <Text>Y: </Text>
+                <Text>
+                  {t('metrics.chartPanel.yAxis', { defaultValue: 'Y: ' })}
+                </Text>
                 <span className='PopoverContent__headerValue'>
                   <Text component='p' className='PopoverContent__axisValue'>
                     {focusedState?.yValue}
@@ -173,7 +184,9 @@ const PopoverContent = React.forwardRef(function PopoverContent(
                 </span>
               </div>
               <div className='PopoverContent__valueContainer'>
-                <Text>X: </Text>
+                <Text>
+                  {t('metrics.chartPanel.xAxis', { defaultValue: 'X: ' })}
+                </Text>
                 <span className='PopoverContent__headerValue'>
                   <Text component='p' className='PopoverContent__axisValue'>
                     {focusedState?.xValue}
@@ -193,7 +206,11 @@ const PopoverContent = React.forwardRef(function PopoverContent(
     if (focusedState?.active && run?.hash && onChangeTooltip) {
       return (
         <div className='PopoverContent__actionButtons'>
-          <Tooltip title='Pin to top'>
+          <Tooltip
+            title={t('metrics.chartPanel.pinToTop', {
+              defaultValue: 'Pin to top',
+            })}
+          >
             <div>
               <Button
                 onClick={() =>
@@ -216,7 +233,11 @@ const PopoverContent = React.forwardRef(function PopoverContent(
               </Button>
             </div>
           </Tooltip>
-          <Tooltip title='Flexible'>
+          <Tooltip
+            title={t('metrics.chartPanel.flexible', {
+              defaultValue: 'Flexible',
+            })}
+          >
             <div>
               <Button
                 onClick={() =>
@@ -239,7 +260,11 @@ const PopoverContent = React.forwardRef(function PopoverContent(
               </Button>
             </div>
           </Tooltip>
-          <Tooltip title='Pin to bottom'>
+          <Tooltip
+            title={t('metrics.chartPanel.pinToBottom', {
+              defaultValue: 'Pin to bottom',
+            })}
+          >
             <div>
               <Button
                 onClick={() => {
@@ -281,7 +306,11 @@ const PopoverContent = React.forwardRef(function PopoverContent(
               underline='none'
             >
               <Icon name='link' />
-              <div>Run Details</div>
+              <div>
+                {t('metrics.chartPanel.runDetails', {
+                  defaultValue: 'Run Details',
+                })}
+              </div>
             </Link>
             <Link
               to={PathEnum.Experiment.replace(
@@ -293,7 +322,11 @@ const PopoverContent = React.forwardRef(function PopoverContent(
               underline='none'
             >
               <Icon name='link' />
-              <div>Experiment Detail</div>
+              <div>
+                {t('metrics.chartPanel.experimentDetail', {
+                  defaultValue: 'Experiment Detail',
+                })}
+              </div>
             </Link>
           </div>
         </div>
@@ -357,7 +390,9 @@ const PopoverContent = React.forwardRef(function PopoverContent(
                     />
                     <div className='PopoverContent__box ScrollBar__hidden'>
                       <div className='PopoverContent__subtitle1'>
-                        Selected Fields
+                        {t('metrics.chartPanel.selectedFields', {
+                          defaultValue: 'Selected Fields',
+                        })}
                       </div>
                       {Object.keys(selectedProps).map((paramKey) => (
                         <div key={paramKey} className='PopoverContent__value'>
@@ -381,7 +416,9 @@ const PopoverContent = React.forwardRef(function PopoverContent(
                     />
                     <div className='PopoverContent__box ScrollBar__hidden'>
                       <div className='PopoverContent__subtitle1'>
-                        Group Config
+                        {t('metrics.chartPanel.groupConfig', {
+                          defaultValue: 'Group Config',
+                        })}
                       </div>
                       {Object.keys(groupConfig).map((groupConfigKey: string) =>
                         _.isEmpty(groupConfig[groupConfigKey]) ? null : (

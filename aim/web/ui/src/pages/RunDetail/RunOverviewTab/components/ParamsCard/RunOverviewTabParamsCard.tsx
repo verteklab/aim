@@ -6,11 +6,14 @@ import Card from 'components/kit/Card/Card';
 import BusyLoaderWrapper from 'components/BusyLoaderWrapper/BusyLoaderWrapper';
 import { Text } from 'components/kit';
 
+import { useTranslation } from 'config/i18n';
+
 import getObjectPaths from 'utils/getObjectPaths';
 import { formatValue } from 'utils/formatValue';
 import { getValue } from 'utils/helper';
 
 function RunOverviewTabParamsCard({ runParams, isRunInfoLoading }: any) {
+  const { t } = useTranslation();
   const tableData = React.useMemo(() => {
     const params = runParams.hasOwnProperty('__system_params')
       ? _.omit(runParams, '__system_params')
@@ -33,7 +36,7 @@ function RunOverviewTabParamsCard({ runParams, isRunInfoLoading }: any) {
         key: 'name',
         title: (
           <Text weight={600} size={14} tint={100}>
-            Name
+            {t('runDetail.overview.name', { defaultValue: 'Name' })}
             <Text
               weight={600}
               size={14}
@@ -50,7 +53,7 @@ function RunOverviewTabParamsCard({ runParams, isRunInfoLoading }: any) {
       {
         dataKey: 'value',
         key: 'value',
-        title: 'Value',
+        title: t('runDetail.overview.value', { defaultValue: 'Value' }),
         width: 0,
         flexGrow: 1,
         cellRenderer: ({ cellData }: any) => <p title={cellData}>{cellData}</p>,
@@ -68,7 +71,9 @@ function RunOverviewTabParamsCard({ runParams, isRunInfoLoading }: any) {
         height='100%'
       >
         <Card
-          title='Run Params'
+          title={t('runDetail.overview.runParams', {
+            defaultValue: 'Run Params',
+          })}
           // subtitle='Little information about Params'
           className='RunOverviewTab__cardBox'
           dataListProps={{
@@ -77,7 +82,9 @@ function RunOverviewTabParamsCard({ runParams, isRunInfoLoading }: any) {
             calcTableHeight: true,
             illustrationConfig: {
               size: 'large',
-              title: 'No Results',
+              title: t('runDetail.overview.noResults', {
+                defaultValue: 'No Results',
+              }),
             },
           }}
         />

@@ -9,6 +9,7 @@ import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 import SearchInput from 'components/kit/DataList/SearchBar/SearchInput';
 
 import { PathEnum } from 'config/enums/routesEnum';
+import { useTranslation } from 'config/i18n';
 
 import tagsService from 'services/api/tags/tagsService';
 import runsService from 'services/api/runs/runsService';
@@ -25,6 +26,7 @@ function SelectTag({
   onRunsTagsChange,
   updatePopover,
 }: ISelectTagProps): JSX.Element {
+  const { t } = useTranslation();
   const [tags, setTags] = React.useState<ITagInfo[]>([]);
   const [searchValue, setSearchValue] = React.useState<string>('');
   const [sortedTags, setSortedTags] = React.useState<
@@ -220,7 +222,9 @@ function SelectTag({
         ) : (
           <div className='SelectTag__noTags'>
             <Text size={14} weight={500}>
-              No Tags Found
+              {t('tags.selectTag.noTagsFound', {
+                defaultValue: 'No Tags Found',
+              })}
             </Text>
           </div>
         )}
@@ -233,7 +237,7 @@ function SelectTag({
               color='primary'
               className='SelectTag__createTag'
             >
-              Edit Tags
+              {t('tags.selectTag.editTags', { defaultValue: 'Edit Tags' })}
             </Button>
           </Link>
         </div>

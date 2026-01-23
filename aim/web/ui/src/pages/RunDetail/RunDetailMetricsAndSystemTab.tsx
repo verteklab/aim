@@ -8,6 +8,7 @@ import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 import { Text } from 'components/kit';
 
 import { ANALYTICS_EVENT_KEYS } from 'config/analytics/analyticsKeysMap';
+import { useTranslation } from 'config/i18n';
 
 import * as analytics from 'services/analytics';
 import runDetailAppModel from 'services/models/runs/runDetailAppModel';
@@ -33,6 +34,7 @@ function RunDetailMetricsAndSystemTab({
   isSystem,
   isRunBatchLoading,
 }: IRunDetailMetricsAndSystemTabProps): React.FunctionComponentElement<React.ReactNode> {
+  const { t } = useTranslation();
   const containerRef = React.useRef<HTMLDivElement>(null);
   const observerRef = React.useRef<IntersectionObserver>();
   const [observerIsReady, setObserverIsReady] = React.useState(false);
@@ -210,7 +212,11 @@ function RunDetailMetricsAndSystemTab({
         <>
           <div className='RunDetailMetricsTab__header'>
             <Text component='h3' size={16} color='primary'>
-              {pinned ? 'Pinned ' : ''}Metrics
+              {pinned
+                ? t('runDetail.metrics.pinnedTitle', {
+                    defaultValue: 'Pinned Metrics',
+                  })
+                : t('runDetail.metrics.title', { defaultValue: 'Metrics' })}
             </Text>
           </div>
           <div className='RunDetailMetricsTab__container'>
@@ -265,7 +271,15 @@ function RunDetailMetricsAndSystemTab({
           <IllustrationBlock
             size='xLarge'
             className='RunDetailTabLoader'
-            title={`No tracked ${isSystem ? 'system' : ''} metrics`}
+            title={
+              isSystem
+                ? t('runDetail.metrics.noTrackedSystem', {
+                    defaultValue: 'No tracked system metrics',
+                  })
+                : t('runDetail.metrics.noTracked', {
+                    defaultValue: 'No tracked metrics',
+                  })
+            }
           />
         )}
       </BusyLoaderWrapper>

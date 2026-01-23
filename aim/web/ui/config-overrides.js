@@ -191,9 +191,13 @@ module.exports = {
     });
 
     // Optimization Overrides
+    // 禁用自动 vendors chunk 合并，避免 chunk 名称不一致的问题
     config.optimization.splitChunks = {
+      chunks: 'all',
       cacheGroups: {
         default: false,
+        // 禁用默认的 vendors chunk，让每个模块使用自己的 chunk 名称
+        vendors: false,
       },
     };
     config.optimization.runtimeChunk = true;

@@ -33,6 +33,20 @@ function MenuItem({
   parentId = '',
   activeItemKey,
 }: IMenuItemProps) {
+  // Remove image_name="..." from name
+  const processedName = React.useMemo(() => {
+    if (typeof name === 'string') {
+      // Match image_name="..." or image_name='...' and remove it along with surrounding commas and spaces
+      return name
+        .replace(/,\s*image_name=["'][^"']*["']\s*,?/gi, ',')
+        .replace(/,\s*image_name=["'][^"']*["']\s*$/gi, '')
+        .replace(/^image_name=["'][^"']*["']\s*,?\s*/gi, '')
+        .replace(/,\s*,/g, ',')
+        .trim();
+    }
+    return name;
+  }, [name]);
+
   const { isActive, isOpen } = React.useMemo(() => {
     /*
      * the fastest algorithm to have tree view is to identify the item with it's parent's ids
@@ -57,11 +71,20 @@ function MenuItem({
       event.stopPropagation();
       event.stopPropagation();
       let key = generateKeyWithParent(parentId, id);
-      let callbackName = name;
+      let callbackName = processedName;
       // if the item has children, activate first child
       if (children?.length) {
         key += `.${children[0].id}`;
-        callbackName = children[0].name;
+        const childName = children[0].name;
+        callbackName =
+          typeof childName === 'string'
+            ? childName
+                .replace(/,\s*image_name=["'][^"']*["']\s*,?/gi, ',')
+                .replace(/,\s*image_name=["'][^"']*["']\s*$/gi, '')
+                .replace(/^image_name=["'][^"']*["']\s*,?\s*/gi, '')
+                .replace(/,\s*,/g, ',')
+                .trim()
+            : childName;
       }
 
       // ensure that clicked item is not active yet
@@ -69,7 +92,7 @@ function MenuItem({
         onClickOpen(key, callbackName);
       }
     },
-    [onClickOpen, parentId, id, name, children, activeItemKey],
+    [onClickOpen, parentId, id, processedName, children, activeItemKey],
   );
 
   return (
@@ -100,7 +123,7 @@ function MenuItem({
               weight={600}
               color={isActive ? 'info' : 'primary'}
             >
-              {name}
+              {processedName}
             </Text>
             {children?.length && (
               <Icon
@@ -119,15 +142,28 @@ function MenuItem({
             })}
           >
             <div>
-              {children?.map((item: IMenuItem) => (
-                <MenuItem
-                  key={item.id}
-                  {...item}
-                  onClickOpen={onClickOpen}
-                  parentId={generateKeyWithParent(parentId, id)}
-                  activeItemKey={activeItemKey}
-                />
-              ))}
+              {children?.map((item: IMenuItem) => {
+                // Remove image_name="..." from child item name
+                const processedChildName =
+                  typeof item.name === 'string'
+                    ? item.name
+                        .replace(/,\s*image_name=["'][^"']*["']\s*,?/gi, ',')
+                        .replace(/,\s*image_name=["'][^"']*["']\s*$/gi, '')
+                        .replace(/^image_name=["'][^"']*["']\s*,?\s*/gi, '')
+                        .replace(/,\s*,/g, ',')
+                        .trim()
+                    : item.name;
+                return (
+                  <MenuItem
+                    key={item.id}
+                    {...item}
+                    name={processedChildName}
+                    onClickOpen={onClickOpen}
+                    parentId={generateKeyWithParent(parentId, id)}
+                    activeItemKey={activeItemKey}
+                  />
+                );
+              })}
             </div>
           </div>
         )}

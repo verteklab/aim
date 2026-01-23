@@ -5,6 +5,7 @@ import { Box, Radio } from '@material-ui/core';
 import { Button, Switcher, Text } from 'components/kit';
 import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 
+import { useTranslation } from 'config/i18n';
 import COLORS from 'config/colors/colors';
 
 import { IGroupingPopoverAdvancedProps } from 'types/components/GroupingPopover/GroupingPopover';
@@ -19,6 +20,7 @@ function ColorPopoverAdvanced({
   paletteIndex,
   groupingData,
 }: IGroupingPopoverAdvancedProps): React.FunctionComponentElement<React.ReactNode> {
+  const { t } = useTranslation();
   function onPaletteChange(e: React.ChangeEvent<HTMLInputElement>) {
     let { value } = e.target;
     if (onGroupingPaletteChange) {
@@ -39,15 +41,19 @@ function ColorPopoverAdvanced({
       <div className='ColorPopoverAdvanced'>
         <div className='ColorPopoverAdvanced__persistence'>
           <Text component='h3' size={12} tint={50}>
-            colors persistence
+            {t('grouping.colorPopoverAdvanced.colorsPersistence', {
+              defaultValue: 'colors persistence',
+            })}
           </Text>
           <Text
             component='p'
             size={14}
             className='ColorPopoverAdvanced__persistence__p'
           >
-            Enable persistent coloring mode so that each item always has the
-            same color regardless of its order.
+            {t('grouping.colorPopoverAdvanced.persistenceDescription', {
+              defaultValue:
+                'Enable persistent coloring mode so that each item always has the same color regardless of its order.',
+            })}
           </Text>
           <div className='flex fac fjb'>
             <div className='ColorPopoverAdvanced__Switcher__button__container'>
@@ -58,7 +64,9 @@ function ColorPopoverAdvanced({
                 variant='contained'
               />
               <Text size={14} className='ColorPopoverAdvanced__span'>
-                Enable
+                {t('grouping.colorPopoverAdvanced.enable', {
+                  defaultValue: 'Enable',
+                })}
               </Text>
             </div>
             {persistence && (
@@ -68,14 +76,18 @@ function ColorPopoverAdvanced({
                 variant='contained'
                 size='small'
               >
-                Shuffle
+                {t('grouping.colorPopoverAdvanced.shuffle', {
+                  defaultValue: 'Shuffle',
+                })}
               </Button>
             )}
           </div>
         </div>
         <div className='ColorPopoverAdvanced__preferred__colors'>
           <Text component='h3' tint={50}>
-            Preferred color palette
+            {t('grouping.colorPopoverAdvanced.preferredColorPalette', {
+              defaultValue: 'Preferred color palette',
+            })}
           </Text>
           <div>
             {COLORS.map((options, index) => (
@@ -89,7 +101,13 @@ function ColorPopoverAdvanced({
                     value={index}
                   />
                   <Text size={14} className='ColorPopoverAdvanced__span'>
-                    {index === 0 ? '8 distinct colors' : '24 colors'}{' '}
+                    {index === 0
+                      ? t('grouping.colorPopoverAdvanced.eightDistinctColors', {
+                          defaultValue: '8 distinct colors',
+                        })
+                      : t('grouping.colorPopoverAdvanced.twentyFourColors', {
+                          defaultValue: '24 colors',
+                        })}{' '}
                   </Text>
                   <div
                     className={`ColorPopoverAdvanced__paletteColors__container ${

@@ -5,6 +5,8 @@ import SliderWithInput from 'components/SliderWithInput';
 import { Button, Icon, Text } from 'components/kit';
 import { IValidationMetadata } from 'components/kit/Input';
 
+import { useTranslation } from 'config/i18n';
+
 import { IRangeSliderPanelProps } from './RangePanel.d';
 
 import './RangePanel.scss';
@@ -16,6 +18,7 @@ function RangePanel({
   onInputChange,
   items,
 }: IRangeSliderPanelProps) {
+  const { t } = useTranslation();
   return (
     <form
       className='RangePanel'
@@ -54,15 +57,21 @@ function RangePanel({
                     item?.inputValidationPatterns ?? [
                       {
                         errorCondition: (value: string | number) => +value <= 0,
-                        errorText: `Value should be greater then ${0}`,
+                        errorText: t('rangePanel.valueShouldBeGreater', {
+                          defaultValue:
+                            'Value should be greater than {{value}}',
+                          values: { value: 0 },
+                        }),
                       },
                       {
                         errorCondition: (value: string | number) => {
                           return +value > rangeLength;
                         },
-                        errorText: `Value should be smaller then ${
-                          rangeLength + 1
-                        }`,
+                        errorText: t('rangePanel.valueShouldBeSmaller', {
+                          defaultValue:
+                            'Value should be smaller than {{value}}',
+                          values: { value: rangeLength + 1 },
+                        }),
                       },
                     ]
                   }
@@ -71,16 +80,20 @@ function RangePanel({
                 <div className='InfoMassageBox'>
                   <Icon name='circle-info' color={'#1473E6'} />
                   <Text size={11} tint={80} weight={500}>
-                    You have only
+                    {t('rangePanel.youHaveOnly', {
+                      defaultValue: 'You have only',
+                    })}{' '}
                     <Text
                       size={11}
                       tint={80}
                       weight={600}
                       className='InfoMessageBoldText'
                     >
-                      1 {item?.infoPropertyName || 'step'}
-                    </Text>
-                    logged.
+                      1{' '}
+                      {item?.infoPropertyName ||
+                        t('rangePanel.step', { defaultValue: 'step' })}
+                    </Text>{' '}
+                    {t('rangePanel.logged', { defaultValue: 'logged.' })}
                   </Text>
                 </div>
               )}
@@ -97,7 +110,7 @@ function RangePanel({
             className='ApplyButton'
             disabled={applyButtonDisabled}
           >
-            Apply
+            {t('common.apply', { defaultValue: 'Apply' })}
           </Button>
         </div>
       </div>

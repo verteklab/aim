@@ -3,6 +3,7 @@ import React from 'react';
 import IllustrationBlock from 'components/IllustrationBlock/IllustrationBlock';
 
 import { IllustrationsEnum } from 'config/illustrationConfig/illustrationConfig';
+import { useTranslation } from 'config/i18n';
 
 import { ITraceVisualizationContainerProps } from '../types';
 
@@ -19,15 +20,23 @@ function withEmptyTraceCheck(
   return (
     props: ITraceVisualizationContainerProps,
   ): React.FunctionComponentElement<React.ReactNode> => {
+    const { t } = useTranslation();
     const traces = props?.traceInfo ? props?.traceInfo[props.traceType] : null;
-    const emptyText = `No tracked ${props.traceType}`;
+
+    const getEmptyText = () => {
+      const traceType = props.traceType;
+      const translationKey = `runDetail.traceVisualization.noTracked.${traceType}`;
+      const defaultText = `No tracked ${traceType}`;
+      return t(translationKey, { defaultValue: defaultText });
+    };
+
     if (!traces || !traces.length) {
       return (
         <IllustrationBlock
           size='xLarge'
           className='TraceEmptyVisualizer'
           type={IllustrationsEnum.EmptyData}
-          title={emptyText}
+          title={getEmptyText()}
         />
       );
     }

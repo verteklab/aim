@@ -3,7 +3,9 @@ import React from 'react';
 import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 import { Text } from 'components/kit';
 
-import GroupingPopovers, {
+import { useTranslation } from 'config/i18n';
+import {
+  getGroupingPopovers,
   GroupNameEnum,
 } from 'config/grouping/GroupingPopovers';
 
@@ -23,19 +25,24 @@ function Grouping({
   onGroupingPersistenceChange,
   onGroupingApplyChange,
   onShuffleChange,
-  groupingPopovers = GroupingPopovers,
+  groupingPopovers,
   isDisabled = false,
 }: IGroupingProps): React.FunctionComponentElement<React.ReactNode> {
+  const { t } = useTranslation();
+  const defaultGroupingPopovers = React.useMemo(
+    () => getGroupingPopovers(t),
+    [t],
+  );
   return (
     <ErrorBoundary>
       <div className='Grouping'>
         <div className='Grouping__title'>
           <Text size={12} weight={600}>
-            Group by
+            {t('grouping.groupBy', { defaultValue: 'Group by' })}
           </Text>
         </div>
         <div className='Grouping__content'>
-          {groupingPopovers.map(
+          {(groupingPopovers || defaultGroupingPopovers).map(
             ({ title, inputLabel, groupName, AdvancedComponent }) => {
               return (
                 <GroupingItem

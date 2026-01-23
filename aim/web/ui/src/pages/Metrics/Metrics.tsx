@@ -17,7 +17,8 @@ import {
   RowHeightSize,
   VisualizationElementEnum,
 } from 'config/table/tableConfigs';
-import GroupingPopovers, {
+import {
+  getGroupingPopovers,
   GroupNameEnum,
 } from 'config/grouping/GroupingPopovers';
 import { RequestStatusEnum } from 'config/enums/requestStatusEnum';
@@ -25,6 +26,7 @@ import {
   IllustrationsEnum,
   Request_Illustrations,
 } from 'config/illustrationConfig/illustrationConfig';
+import { useTranslation } from 'config/i18n';
 
 import { AppNameEnum } from 'services/models/explorer';
 
@@ -42,6 +44,7 @@ import './Metrics.scss';
 function Metrics(
   props: IMetricProps,
 ): React.FunctionComponentElement<React.ReactNode> {
+  const { t } = useTranslation();
   const [isProgressBarVisible, setIsProgressBarVisible] =
     React.useState<boolean>(false);
   const chartProps = React.useMemo(() => {
@@ -107,7 +110,7 @@ function Metrics(
                 onSearchQueryCopy={props.onSearchQueryCopy}
               />
               <Grouping
-                groupingPopovers={GroupingPopovers.filter(
+                groupingPopovers={getGroupingPopovers(t).filter(
                   (p) =>
                     p.groupName === GroupNameEnum.COLOR ||
                     p.groupName === GroupNameEnum.STROKE ||
@@ -218,14 +221,14 @@ function Metrics(
                       />
                     )}
                   </div>
-                  <ResizePanel
+                  {/* <ResizePanel
                     className='Metrics__ResizePanel'
                     panelResizing={props.panelResizing}
                     resizeElemRef={props.resizeElemRef}
                     resizeMode={props.resizeMode}
                     onTableResizeModeChange={props.onTableResizeModeChange}
-                  />
-                  <div
+                  /> */}
+                  {/* <div
                     ref={props.tableElemRef}
                     className={classNames('Metrics__table__container', {
                       fullHeight: props.resizeMode === ResizeModeEnum.MaxHeight,
@@ -292,7 +295,7 @@ function Metrics(
                         />
                       </ErrorBoundary>
                     )}
-                  </div>
+                  </div> */}
                 </>
               )}
             </div>

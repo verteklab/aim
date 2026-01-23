@@ -18,7 +18,8 @@ import {
   VisualizationElementEnum,
 } from 'config/table/tableConfigs';
 import { ResizeModeEnum } from 'config/enums/tableEnums';
-import GroupingPopovers, {
+import {
+  getGroupingPopovers,
   GroupNameEnum,
 } from 'config/grouping/GroupingPopovers';
 import { RequestStatusEnum } from 'config/enums/requestStatusEnum';
@@ -26,6 +27,7 @@ import {
   IllustrationsEnum,
   Request_Illustrations,
 } from 'config/illustrationConfig/illustrationConfig';
+import { useTranslation } from 'config/i18n';
 
 import AppBar from 'pages/Metrics/components/MetricsBar/MetricsBar';
 
@@ -114,6 +116,7 @@ const Params = ({
   onRunsTagsChange,
   onRowsVisibilityChange,
 }: IParamsProps): React.FunctionComponentElement<React.ReactNode> => {
+  const { t } = useTranslation();
   const [isProgressBarVisible, setIsProgressBarVisible] =
     React.useState<boolean>(false);
   const chartProps: any[] = React.useMemo(() => {
@@ -159,7 +162,7 @@ const Params = ({
               onSelectRunQueryChange={onSelectRunQueryChange}
             />
             <Grouping
-              groupingPopovers={GroupingPopovers.filter(
+              groupingPopovers={getGroupingPopovers(t).filter(
                 (p) =>
                   p.groupName === GroupNameEnum.COLOR ||
                   p.groupName === GroupNameEnum.STROKE ||

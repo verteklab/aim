@@ -28,7 +28,7 @@ function RunsBar(props: {
         <LiveUpdateSettings {...props} />
         <div className='MetricsBar__menu'>
           <ErrorBoundary>
-            <ControlPopover
+            {/* <ControlPopover
               title={t('common.menu')}
               anchor={({ onAnchorClick }) => (
                 <Button
@@ -55,7 +55,7 @@ function RunsBar(props: {
                   </a>
                 </div>
               }
-            />
+            /> */}
           </ErrorBoundary>
         </div>
       </AppBar>

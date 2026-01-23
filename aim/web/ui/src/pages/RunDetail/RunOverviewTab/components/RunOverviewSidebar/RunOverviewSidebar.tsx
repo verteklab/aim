@@ -10,6 +10,8 @@ import { Button, Icon, Text } from 'components/kit';
 import AttachedTagsList from 'components/AttachedTagsList/AttachedTagsList';
 import CopyToClipBoard from 'components/CopyToClipBoard/CopyToClipBoard';
 
+import { useTranslation } from 'config/i18n';
+
 import runDetailAppModel from 'services/models/runs/runDetailAppModel';
 
 import stringToColor from 'utils/stringToColor';
@@ -32,6 +34,7 @@ function RunOverviewSidebar({
   setContainerHeight,
 }: IRunOverviewSidebarProps) {
   const { url } = useRouteMatch();
+  const { t } = useTranslation();
   const descriptionBoxRef = React.useRef<HTMLElement | any>(null);
   const [seeMoreDescription, setSeeMoreDescription] =
     React.useState<boolean>(false);
@@ -57,48 +60,50 @@ function RunOverviewSidebar({
       traces.metric.filter((m) => m.name.startsWith('__system__')).length || 0;
     return [
       {
-        name: 'Notes',
+        name: t('runDetail.tabs.notes', { defaultValue: 'Notes' }),
         path: `${path}/notes`,
         value: info.notes || 0,
       },
       {
-        name: 'Metrics',
+        name: t('runDetail.tabs.metrics', { defaultValue: 'Metrics' }),
         path: `${path}/metrics`,
         value: traces?.metric?.length - systemMetricsLength || 0,
       },
       {
-        name: 'System',
+        name: t('runDetail.tabs.system', { defaultValue: 'System' }),
         path: `${path}/system`,
         value: systemMetricsLength,
       },
       {
-        name: 'Distributions',
+        name: t('runDetail.tabs.distributions', {
+          defaultValue: 'Distributions',
+        }),
         path: `${path}/distributions`,
         value: traces?.distributions?.length || 0,
       },
       {
-        name: 'Images',
+        name: t('runDetail.tabs.images', { defaultValue: 'Images' }),
         path: `${path}/images`,
         value: traces?.images?.length || 0,
       },
       {
-        name: 'Audios',
+        name: t('runDetail.tabs.audios', { defaultValue: 'Audios' }),
         path: `${path}/audios`,
         value: traces?.audios?.length || 0,
       },
       {
-        name: 'Texts',
+        name: t('runDetail.tabs.texts', { defaultValue: 'Texts' }),
         path: `${path}/texts`,
         value: traces?.texts?.length || 0,
       },
       {
-        name: 'Figures',
+        name: t('runDetail.tabs.figures', { defaultValue: 'Figures' }),
         path: `${path}/figures`,
         value: traces?.figures?.length || 0,
       },
     ];
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [traces]);
+  }, [traces, t]);
 
   function onContainerScroll(e: any) {
     overviewSectionRef?.current?.scrollTo(0, e.target.scrollTop);
@@ -121,18 +126,20 @@ function RunOverviewSidebar({
       <div className='RunOverviewSidebar__wrapper'>
         <div className='RunOverviewSidebar__section RunOverviewSidebar__section__info'>
           <Text weight={600} size={18} tint={100} component='h3'>
-            Information
+            {t('runDetail.overview.sidebar.information', {
+              defaultValue: 'Information',
+            })}
           </Text>
           <div className='RunOverviewSidebar__section__info__listItem'>
             <Icon name='calendar' />
             <Text tint={70}>
-              {`${moment(info?.creation_time * 1000).format('DD MMMM YYYY')}`}
+              {`${moment(info?.creation_time * 1000).format('YYYY-MM-DD')}`}
             </Text>
           </div>
           <div className='RunOverviewSidebar__section__info__listItem'>
             <Icon name='time' />
             <Text tint={70}>
-              {`${moment(info?.creation_time * 1000).format('HH:MM A')}`}
+              {`${moment(info?.creation_time * 1000).format('HH:mm A')}`}
             </Text>
           </div>
           <div className='RunOverviewSidebar__section__info__listItem'>
@@ -168,7 +175,9 @@ function RunOverviewSidebar({
         <div className='RunOverviewSidebar__section RunOverviewSidebar__section__descriptionBox'>
           <div className='RunOverviewSidebar__section__descriptionBox__header'>
             <Text weight={600} size={18} tint={100} component='h3'>
-              Description
+              {t('runDetail.overview.sidebar.description', {
+                defaultValue: 'Description',
+              })}
             </Text>
             <NavLink to={`${url.split('/').slice(0, -1).join('/')}/settings`}>
               <Button withOnlyIcon size='small' color='secondary'>
@@ -189,7 +198,12 @@ function RunOverviewSidebar({
             )}
             ref={descriptionBoxRef}
           >
-            <Text tint={70}>{info?.description || 'No description'}</Text>
+            <Text tint={70}>
+              {info?.description ||
+                t('runDetail.overview.sidebar.noDescription', {
+                  defaultValue: 'No description',
+                })}
+            </Text>
           </div>
           {descriptionHeight >= CLOSED_DESCRIPTION_BOX_MAX_HEIGHT && (
             <div
@@ -197,7 +211,13 @@ function RunOverviewSidebar({
               onClick={onSeeMoreButtonClick}
             >
               <Text size={12} weight={600}>
-                {seeMoreDescription ? 'See less' : 'See more'}
+                {seeMoreDescription
+                  ? t('runDetail.overview.sidebar.seeLess', {
+                      defaultValue: 'See less',
+                    })
+                  : t('runDetail.overview.sidebar.seeMore', {
+                      defaultValue: 'See more',
+                    })}
               </Text>
             </div>
           )}
@@ -206,7 +226,9 @@ function RunOverviewSidebar({
         {info?.creator && (
           <div className='RunOverviewSidebar__section RunOverviewSidebar__section__creator'>
             <Text weight={600} size={18} tint={100} component='h3'>
-              Creator
+              {t('runDetail.overview.sidebar.creator', {
+                defaultValue: 'Creator',
+              })}
             </Text>
             <div className='RunOverviewSidebar__section__creator__avatar'>
               <Link
@@ -240,7 +262,9 @@ function RunOverviewSidebar({
         )}
         <div className='RunOverviewSidebar__section RunOverviewSidebar__section__insights'>
           <Text weight={600} size={18} tint={100} component='h3'>
-            Insights
+            {t('runDetail.overview.sidebar.insights', {
+              defaultValue: 'Insights',
+            })}
           </Text>
           <div>
             {insightsList.map(({ name, path, value }) => (

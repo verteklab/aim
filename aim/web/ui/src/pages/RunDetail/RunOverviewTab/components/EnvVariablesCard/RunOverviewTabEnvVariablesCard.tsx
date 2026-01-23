@@ -5,6 +5,8 @@ import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 import BusyLoaderWrapper from 'components/BusyLoaderWrapper/BusyLoaderWrapper';
 import { ICardProps } from 'components/kit/Card/Card.d';
 
+import { useTranslation } from 'config/i18n';
+
 import { formatValue } from 'utils/formatValue';
 
 import { IRunOverviewTabEnvVariablesCardProps } from './RunOverviewTabEnvVariablesCard.d';
@@ -13,6 +15,7 @@ function RunOverviewTabEnvVariablesCard({
   envVariables,
   isRunInfoLoading,
 }: IRunOverviewTabEnvVariablesCardProps) {
+  const { t } = useTranslation();
   const tableData = React.useMemo(
     () =>
       Object.entries(envVariables || {}).map(
@@ -34,7 +37,9 @@ function RunOverviewTabEnvVariablesCard({
           width: '50%',
           title: (
             <Text weight={600} size={14} tint={100}>
-              Env Variables
+              {t('runDetail.overview.envVariables', {
+                defaultValue: 'Env Variables',
+              })}
               <Text
                 weight={600}
                 size={14}
@@ -53,7 +58,7 @@ function RunOverviewTabEnvVariablesCard({
           dataKey: 'value',
           key: 'value',
           width: '50%',
-          title: 'Value',
+          title: t('runDetail.overview.value', { defaultValue: 'Value' }),
           cellRenderer: ({ cellData }: any) => (
             <p title={cellData}>{cellData}</p>
           ),
@@ -62,16 +67,20 @@ function RunOverviewTabEnvVariablesCard({
       tableData,
       illustrationConfig: {
         size: 'large',
-        title: 'No Results',
+        title: t('runDetail.overview.noResults', {
+          defaultValue: 'No Results',
+        }),
       },
     }),
-    [tableData],
+    [tableData, t],
   );
   return (
     <ErrorBoundary>
       <BusyLoaderWrapper isLoading={isRunInfoLoading} height='100%'>
         <Card
-          title='Environment Variables'
+          title={t('runDetail.overview.envVariables', {
+            defaultValue: 'Environment Variables',
+          })}
           className='RunOverviewTab__cardBox'
           dataListProps={dataListProps}
         />

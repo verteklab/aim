@@ -28,6 +28,7 @@ import Spinner from 'components/kit/Spinner';
 import { ANALYTICS_EVENT_KEYS } from 'config/analytics/analyticsKeysMap';
 import { DATE_WITH_SECONDS } from 'config/dates/dates';
 import { PathEnum } from 'config/enums/routesEnum';
+import { useTranslation } from 'config/i18n';
 
 import CompareSelectedRunsPopover from 'pages/Metrics/components/Table/CompareSelectedRunsPopover';
 
@@ -80,28 +81,33 @@ const RunLogRecords = React.lazy(
   () => import(/* webpackChunkName: "RunLogRecords" */ './RunLogRecords'),
 );
 
-const tabs: Record<string, string> = {
-  overview: 'Overview',
-  run_parameters: 'Run Params',
-  notes: 'Notes',
-  logs: 'Logs',
-  messages: 'Messages',
-  metrics: 'Metrics',
-  system: 'System',
-  distributions: 'Distributions',
-  images: 'Images',
-  audios: 'Audios',
-  texts: 'Texts',
-  figures: 'Figures',
-  settings: 'Settings',
-};
-
 function RunDetail(): React.FunctionComponentElement<React.ReactNode> {
   const { runHash } = useParams<{ runHash: string }>();
   const history = useHistory();
   const { url } = useRouteMatch();
   const { pathname } = useLocation();
   const runData = useModel(runDetailAppModel);
+  const { t } = useTranslation();
+
+  const tabs: Record<string, string> = {
+    overview: t('runDetail.tabs.overview', { defaultValue: 'Overview' }),
+    run_parameters: t('runDetail.tabs.runParameters', {
+      defaultValue: 'Run Params',
+    }),
+    notes: t('runDetail.tabs.notes', { defaultValue: 'Notes' }),
+    logs: t('runDetail.tabs.logs', { defaultValue: 'Logs' }),
+    messages: t('runDetail.tabs.messages', { defaultValue: 'Messages' }),
+    metrics: t('runDetail.tabs.metrics', { defaultValue: 'Metrics' }),
+    system: t('runDetail.tabs.system', { defaultValue: 'System' }),
+    distributions: t('runDetail.tabs.distributions', {
+      defaultValue: 'Distributions',
+    }),
+    images: t('runDetail.tabs.images', { defaultValue: 'Images' }),
+    audios: t('runDetail.tabs.audios', { defaultValue: 'Audios' }),
+    texts: t('runDetail.tabs.texts', { defaultValue: 'Texts' }),
+    figures: t('runDetail.tabs.figures', { defaultValue: 'Figures' }),
+    settings: t('runDetail.tabs.settings', { defaultValue: 'Settings' }),
+  };
 
   let runsOfExperimentRequestRef: any = null;
   const containerRef = React.useRef<HTMLDivElement | any>(null);
@@ -113,13 +119,28 @@ function RunDetail(): React.FunctionComponentElement<React.ReactNode> {
   function redirect(): void {
     const splitPathname: string[] = pathname.split('/');
     const path: string = `${url}/overview`;
+    const tabKeys = [
+      'overview',
+      'run_parameters',
+      'notes',
+      'logs',
+      'messages',
+      'metrics',
+      'system',
+      'distributions',
+      'images',
+      'audios',
+      'texts',
+      'figures',
+      'settings',
+    ];
     if (splitPathname.length > 4) {
       history.replace(path);
       setActiveTab(path);
       return;
     }
     if (splitPathname[3]) {
-      if (!Object.keys(tabs).includes(splitPathname[3])) {
+      if (!tabKeys.includes(splitPathname[3])) {
         history.replace(path);
       }
     } else {
@@ -238,7 +259,22 @@ function RunDetail(): React.FunctionComponentElement<React.ReactNode> {
   }
 
   function getCurrentTabValue(pathname: string, url: string) {
-    const values = Object.keys(tabs).map((tabKey) => `${url}/${tabKey}`);
+    const tabKeys = [
+      'overview',
+      'run_parameters',
+      'notes',
+      'logs',
+      'messages',
+      'metrics',
+      'system',
+      'distributions',
+      'images',
+      'audios',
+      'texts',
+      'figures',
+      'settings',
+    ];
+    const values = tabKeys.map((tabKey) => `${url}/${tabKey}`);
     return values.indexOf(pathname) === -1 ? false : pathname;
   }
 
@@ -300,7 +336,10 @@ function RunDetail(): React.FunctionComponentElement<React.ReactNode> {
                           <div className='RunDetail__runDetailContainer__appBarContainer__appBarTitleBox__appBarTitleBoxWrapper'>
                             <Tooltip
                               title={`${
-                                runData?.runInfo?.experiment?.name || 'default'
+                                runData?.runInfo?.experiment?.name ||
+                                t('runDetail.experiment.default', {
+                                  defaultValue: 'default',
+                                })
                               } / ${runData?.runInfo?.name || ''}`}
                             >
                               <div className='RunDetail__runDetailContainer__appBarContainer__appBarTitleBox__container'>
@@ -313,7 +352,9 @@ function RunDetail(): React.FunctionComponentElement<React.ReactNode> {
                                 >
                                   <Text tint={100} size={16} weight={600}>
                                     {runData?.runInfo?.experiment?.name ||
-                                      'default'}
+                                      t('runDetail.experiment.default', {
+                                        defaultValue: 'default',
+                                      })}
                                   </Text>
                                 </Link>
                                 <Text
@@ -349,8 +390,12 @@ function RunDetail(): React.FunctionComponentElement<React.ReactNode> {
                               }
                               title={
                                 runData?.runInfo?.end_time
-                                  ? 'Finished'
-                                  : 'In Progress'
+                                  ? t('runDetail.status.finished', {
+                                      defaultValue: 'Finished',
+                                    })
+                                  : t('runDetail.status.inProgress', {
+                                      defaultValue: 'In Progress',
+                                    })
                               }
                             />
                           </div>
@@ -414,7 +459,9 @@ function RunDetail(): React.FunctionComponentElement<React.ReactNode> {
                 <CompareSelectedRunsPopover
                   appName={'run' as AppNameEnum} // @TODO: change to AppNameEnum.RUN
                   query={`run.hash == "${runHash}"`}
-                  buttonText={'Explore'}
+                  buttonText={t('runDetail.explore', {
+                    defaultValue: 'Explore',
+                  })}
                 />
               </div>
               <div className='RunDetail__runDetailContainer__appBarContainer__appBarBox__actionContainer'>
@@ -434,7 +481,21 @@ function RunDetail(): React.FunctionComponentElement<React.ReactNode> {
               indicatorColor='primary'
               textColor='primary'
             >
-              {Object.keys(tabs).map((tabKey: string) => (
+              {[
+                'overview',
+                'run_parameters',
+                'notes',
+                'logs',
+                'messages',
+                'metrics',
+                'system',
+                'distributions',
+                'images',
+                'audios',
+                'texts',
+                'figures',
+                'settings',
+              ].map((tabKey: string) => (
                 <Tab
                   key={`${url}/${tabKey}`}
                   label={tabs[tabKey]}
@@ -450,7 +511,21 @@ function RunDetail(): React.FunctionComponentElement<React.ReactNode> {
             height='calc(100vh - 98px)'
           >
             <Switch>
-              {Object.keys(tabs).map((tabKey: string) => (
+              {[
+                'overview',
+                'run_parameters',
+                'notes',
+                'logs',
+                'messages',
+                'metrics',
+                'system',
+                'distributions',
+                'images',
+                'audios',
+                'texts',
+                'figures',
+                'settings',
+              ].map((tabKey: string) => (
                 <Route path={`${url}/${tabKey}`} key={tabKey}>
                   <ErrorBoundary>
                     {tabKey === 'overview' ? (

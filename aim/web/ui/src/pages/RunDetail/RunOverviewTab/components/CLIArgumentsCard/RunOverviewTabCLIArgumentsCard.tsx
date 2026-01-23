@@ -5,6 +5,8 @@ import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 import BusyLoaderWrapper from 'components/BusyLoaderWrapper/BusyLoaderWrapper';
 import CodeBlock from 'components/CodeBlock/CodeBlock';
 
+import { useTranslation } from 'config/i18n';
+
 import { IRunOverviewTabCLIArgumentsCardProps } from './RunOverviewTabCLIArgumentsCard.d';
 
 import './RunOverviewTabCLIArgumentsCard.scss';
@@ -13,6 +15,7 @@ function RunOverviewTabCLIArgumentsCard({
   cliArguments,
   isRunInfoLoading,
 }: IRunOverviewTabCLIArgumentsCardProps) {
+  const { t } = useTranslation();
   const code: string = React.useMemo(
     () => (cliArguments || []).join(' '),
     [cliArguments],
@@ -21,7 +24,9 @@ function RunOverviewTabCLIArgumentsCard({
     <ErrorBoundary>
       <BusyLoaderWrapper isLoading={isRunInfoLoading} height='100%'>
         <Card
-          title='CLI Arguments'
+          title={t('runDetail.overview.cliArguments', {
+            defaultValue: 'CLI Arguments',
+          })}
           className='RunOverviewTabCLIArgumentsCard RunOverviewTab__cardBox'
         >
           <CodeBlock code={code} />

@@ -8,6 +8,7 @@ import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 import NameAndDescriptionCard from 'components/NameAndDescriptionCard';
 
 import { ANALYTICS_EVENT_KEYS } from 'config/analytics/analyticsKeysMap';
+import { useTranslation } from 'config/i18n';
 
 import runDetailAppModel from 'services/models/runs/runDetailAppModel';
 import * as analytics from 'services/analytics';
@@ -23,6 +24,7 @@ function RunDetailSettingsTab({
   defaultDescription,
 }: IRunDetailSettingsTabProps): React.FunctionComponentElement<React.ReactNode> {
   const history = useHistory();
+  const { t } = useTranslation();
   const [openDeleteModal, setOpenDeleteModal] = React.useState<boolean>(false);
 
   function onRunArchive() {
@@ -72,14 +74,44 @@ function RunDetailSettingsTab({
             onSave={onSave}
           />
           <ActionCard
-            title={isArchived ? 'Unarchive Run' : 'Archive Run'}
+            title={
+              isArchived
+                ? t('runDetail.settings.unarchive', {
+                    defaultValue: 'Unarchive Run',
+                  })
+                : t('runDetail.settings.archive', {
+                    defaultValue: 'Archive Run',
+                  })
+            }
             description={
               isArchived
-                ? 'Unarchive runs will appear in search both on Dashboard and Explore.'
-                : 'Archived runs will not appear in search both on Dashboard and Explore.'
+                ? t('runDetail.settings.unarchiveDescription', {
+                    defaultValue:
+                      'Unarchive runs will appear in search both on Dashboard and Explore.',
+                  })
+                : t('runDetail.settings.archiveDescription', {
+                    defaultValue:
+                      'Archived runs will not appear in search both on Dashboard and Explore.',
+                  })
             }
-            btnTooltip={isArchived ? 'Unarchive' : 'Archive'}
-            btnText={isArchived ? 'Unarchive' : 'Archive'}
+            btnTooltip={
+              isArchived
+                ? t('runDetail.settings.unarchive', {
+                    defaultValue: 'Unarchive',
+                  })
+                : t('runDetail.settings.archive', {
+                    defaultValue: 'Archive',
+                  })
+            }
+            btnText={
+              isArchived
+                ? t('runDetail.settings.unarchive', {
+                    defaultValue: 'Unarchive',
+                  })
+                : t('runDetail.settings.archive', {
+                    defaultValue: 'Archive',
+                  })
+            }
             onAction={onRunArchive}
             btnProps={{
               variant: 'outlined',
@@ -92,10 +124,17 @@ function RunDetailSettingsTab({
           />
 
           <ActionCard
-            title='Delete Run'
-            description='Once you delete a run, there is no going back. Please be certain.'
-            btnTooltip='Delete Run'
-            btnText='Delete'
+            title={t('runDetail.settings.delete', {
+              defaultValue: 'Delete Run',
+            })}
+            description={t('runDetail.settings.deleteDescription', {
+              defaultValue:
+                'Once you delete a run, there is no going back. Please be certain.',
+            })}
+            btnTooltip={t('runDetail.settings.delete', {
+              defaultValue: 'Delete Run',
+            })}
+            btnText={t('table.delete', { defaultValue: 'Delete' })}
             onAction={handleDeleteModalOpen}
             btnProps={{
               variant: 'contained',
@@ -107,11 +146,15 @@ function RunDetailSettingsTab({
           open={openDeleteModal}
           onCancel={handleDeleteModalClose}
           onSubmit={onRunDelete}
-          text='Are you sure you want to delete this run?'
+          text={t('runDetail.settings.deleteConfirm', {
+            defaultValue: 'Are you sure you want to delete this run?',
+          })}
           icon={<Icon name='delete' />}
-          title='Delete run'
+          title={t('runDetail.settings.deleteTitle', {
+            defaultValue: 'Delete run',
+          })}
           statusType='error'
-          confirmBtnText='Delete'
+          confirmBtnText={t('table.delete', { defaultValue: 'Delete' })}
         />
       </div>
     </ErrorBoundary>

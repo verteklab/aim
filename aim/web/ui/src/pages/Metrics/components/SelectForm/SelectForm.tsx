@@ -177,7 +177,9 @@ function SelectForm({
                     disabled={isDisabled}
                   >
                     <Icon name='plus' style={{ marginRight: '0.5rem' }} />
-                    Metrics
+                    {t('metrics.selectForm.buttonLabel', {
+                      defaultValue: 'Metrics',
+                    })}
                   </Button>
                   <Popper
                     id={id}

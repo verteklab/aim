@@ -3,6 +3,8 @@ import React from 'react';
 import { Button, Switcher, Text } from 'components/kit';
 import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 
+import { useTranslation } from 'config/i18n';
+
 import { IGroupingPopoverAdvancedProps } from 'types/components/GroupingPopover/GroupingPopover';
 
 import './StrokePopoverAdvanced.scss';
@@ -13,6 +15,7 @@ function StrokePopoverAdvanced({
   persistence,
   groupingData,
 }: IGroupingPopoverAdvancedProps): React.FunctionComponentElement<React.ReactNode> {
+  const { t } = useTranslation();
   function isShuffleDisabled(): boolean {
     //ToDo reverse mode
     // if (groupingData?.reverseMode.stroke || groupingData?.stroke.length) {
@@ -26,15 +29,19 @@ function StrokePopoverAdvanced({
       <div className='StrokePopoverAdvanced'>
         <div className='StrokePopoverAdvanced__container'>
           <Text component='h3' size={12} tint={50}>
-            Stroke Style persistence
+            {t('grouping.strokePopoverAdvanced.strokeStylePersistence', {
+              defaultValue: 'Stroke Style persistence',
+            })}
           </Text>
           <Text
             component='p'
             size={14}
             className='StrokePopoverAdvanced__container__p'
           >
-            Enable persistent mode for stroke styles so that each group always
-            has the same stroke style regardless to its order
+            {t('grouping.strokePopoverAdvanced.persistenceDescription', {
+              defaultValue:
+                'Enable persistent mode for stroke styles so that each group always has the same stroke style regardless to its order',
+            })}
           </Text>
           <div className='flex fac fjb'>
             <div className='StrokePopoverAdvanced__Switcher__button__container'>
@@ -45,7 +52,9 @@ function StrokePopoverAdvanced({
                 size='large'
               />
               <Text size={14} className='ColorPopoverAdvanced__container__span'>
-                Enable
+                {t('grouping.strokePopoverAdvanced.enable', {
+                  defaultValue: 'Enable',
+                })}
               </Text>
             </div>
             {persistence && (
@@ -55,7 +64,9 @@ function StrokePopoverAdvanced({
                 variant='contained'
                 size='small'
               >
-                Shuffle
+                {t('grouping.strokePopoverAdvanced.shuffle', {
+                  defaultValue: 'Shuffle',
+                })}
               </Button>
             )}
           </div>

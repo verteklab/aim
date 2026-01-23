@@ -5,6 +5,7 @@ import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 import IllustrationBlock from 'components/IllustrationBlock/IllustrationBlock';
 
 import { ANALYTICS_EVENT_KEYS } from 'config/analytics/analyticsKeysMap';
+import { useTranslation } from 'config/i18n';
 
 import * as analytics from 'services/analytics';
 
@@ -25,6 +26,7 @@ function RunOverviewTab({ runData, runHash }: IRunOverviewTabProps) {
   const overviewSectionRef = React.useRef<HTMLElement | any>(null);
   const overviewSectionContentRef = React.useRef<HTMLElement | any>(null);
   const [containerHeight, setContainerHeight] = React.useState<number>(0);
+  const { t } = useTranslation();
 
   React.useEffect(() => {
     analytics.pageView(
@@ -81,7 +83,12 @@ function RunOverviewTab({ runData, runHash }: IRunOverviewTabProps) {
           style={{ height: containerHeight }}
         >
           {_.isEmpty(cardsData) ? (
-            <IllustrationBlock size='large' title='No Results' />
+            <IllustrationBlock
+              size='large'
+              title={t('runDetail.overview.noResults', {
+                defaultValue: 'No Results',
+              })}
+            />
           ) : (
             <>
               {_.isEmpty(cardsData?.runParams) ? null : (

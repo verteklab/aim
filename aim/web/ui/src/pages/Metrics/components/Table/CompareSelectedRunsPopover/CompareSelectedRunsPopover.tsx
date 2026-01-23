@@ -134,7 +134,7 @@ function CompareSelectedRunsPopover({
                     onClick={(e) => onCompare(e, item)}
                     className='CompareSelectedRunsPopover__item-explorerName'
                   >
-                    {item}
+                    {t(`navigation.${item}`, { defaultValue: item })}
                   </Text>
                   {/* <Tooltip title={t('table.compare.newTab', { defaultValue: 'Compare in a new tab' })}>
                     <div>

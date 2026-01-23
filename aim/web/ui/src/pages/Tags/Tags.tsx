@@ -7,6 +7,7 @@ import NotificationContainer from 'components/NotificationContainer/Notification
 import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 
 import { ANALYTICS_EVENT_KEYS } from 'config/analytics/analyticsKeysMap';
+import { useTranslation } from 'config/i18n';
 
 import * as analytics from 'services/analytics';
 
@@ -27,6 +28,7 @@ function Tags({
   isTagInfoDataLoading,
 }: ITagsProps): React.FunctionComponentElement<React.ReactNode> {
   const [value, setValue] = useState(0);
+  const { t } = useTranslation();
   const [archivedTagsList, setArchivedTagsList] = useState(
     tagsListData?.filter((tag) => tag.archived) || [],
   );
@@ -55,8 +57,10 @@ function Tags({
             indicatorColor='primary'
             className='Tags__tabsContainer__tabs'
           >
-            <Tab label='Tags' />
-            <Tab label='Hidden Tags' />
+            <Tab label={t('tags.tabs.tags', { defaultValue: 'Tags' })} />
+            <Tab
+              label={t('tags.tabs.archived', { defaultValue: 'Archived' })}
+            />
           </Tabs>
         </Paper>
         <ErrorBoundary>

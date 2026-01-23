@@ -86,7 +86,6 @@ function TraceVisualizationContainer({
     // @ts-ignore
     analytics.pageView(ANALYTICS_EVENT_KEYS.runDetails.tabs[traceType].tabView);
   }, [traceType]);
-
   return (
     <ErrorBoundary>
       <div className='TraceVisualizationWrapper'>

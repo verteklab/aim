@@ -2,9 +2,13 @@ import React from 'react';
 
 import { Button, Icon } from 'components/kit';
 
+import { useTranslation } from 'config/i18n';
+
 import { ISearchButtonProps } from './SearchButton.d';
 
 function SearchButton({ isFetching, onSubmit, ...rest }: ISearchButtonProps) {
+  const { t } = useTranslation();
+
   return (
     <Button
       key={`${isFetching}`}
@@ -20,7 +24,9 @@ function SearchButton({ isFetching, onSubmit, ...rest }: ISearchButtonProps) {
       onClick={onSubmit}
       {...rest}
     >
-      {isFetching ? 'Cancel' : 'Search'}
+      {isFetching
+        ? t('common.cancel', { defaultValue: 'Cancel' })
+        : t('common.search', { defaultValue: 'Search' })}
     </Button>
   );
 }

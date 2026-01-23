@@ -1,6 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 
+import { useTranslation } from 'config/i18n';
+
 import { Text } from '../kit';
 
 import { IProgressBarProps } from './ProgressBar.d';
@@ -13,6 +15,7 @@ function ProgressBar({
   pendingStatus = false,
   setIsProgressBarVisible,
 }: IProgressBarProps) {
+  const { t } = useTranslation();
   const { checked = 0, trackedRuns = 0, matched = 0, percent = 0 } = progress;
   const [renderBar, setRenderBar] = React.useState(false);
   const timeoutIdRef = React.useRef(0);
@@ -47,8 +50,13 @@ function ProgressBar({
     [pendingStatus, processing],
   );
   const title = React.useMemo(
-    () => (pendingStatus ? 'Searching over runs...' : 'Processing...'),
-    [pendingStatus],
+    () =>
+      pendingStatus
+        ? t('progressBar.searchingOverRuns', {
+            defaultValue: 'Searching over runs...',
+          })
+        : t('progressBar.processing', { defaultValue: 'Processing...' }),
+    [pendingStatus, t],
   );
 
   return renderBar ? (
@@ -68,7 +76,10 @@ function ProgressBar({
         {trackedRuns !== 0 && (
           <div className='ProgressBar__container__info'>
             <Text size={14} weight={500}>
-              {checked} of {trackedRuns} checked
+              {t('progressBar.checkedOf', {
+                defaultValue: '{{checked}} of {{trackedRuns}} checked',
+                values: { checked, trackedRuns },
+              })}
             </Text>
             <Text
               className='ProgressBar__container__info__matched'
@@ -76,7 +87,10 @@ function ProgressBar({
               weight={600}
               color='success'
             >
-              {matched} matched run(s)
+              {t('progressBar.matchedRuns', {
+                defaultValue: '{{matched}} matched run(s)',
+                values: { matched },
+              })}
             </Text>
           </div>
         )}

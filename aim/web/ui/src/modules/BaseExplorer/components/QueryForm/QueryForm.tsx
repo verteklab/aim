@@ -18,6 +18,7 @@ import { Badge, Button, Icon, Text } from 'components/kit';
 import AutocompleteInput from 'components/AutocompleteInput';
 import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 
+import { useTranslation } from 'config/i18n';
 import { getSuggestionsByExplorer } from 'config/monacoConfig/monacoConfig';
 
 import { IQueryFormProps } from 'modules/BaseExplorer/types';
@@ -46,6 +47,7 @@ type StatusCheckResult = {
 };
 
 function QueryForm(props: IQueryFormProps) {
+  const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = React.useState<any>(null);
   const [searchValue, setSearchValue] = React.useState<string>('');
   const engine = props.engine;
@@ -86,20 +88,26 @@ function QueryForm(props: IQueryFormProps) {
         { ...(error.detail || {}) },
         query.advancedModeOn,
       );
+      const endOffset =
+        syntaxErrDetail.end_offset &&
+        syntaxErrDetail.end_offset !== syntaxErrDetail.offset
+          ? `-${syntaxErrDetail.end_offset}`
+          : '';
       return {
-        message: `Query syntax error at line (${syntaxErrDetail.line}, ${
-          syntaxErrDetail.offset
-        }${
-          syntaxErrDetail.end_offset &&
-          syntaxErrDetail.end_offset !== syntaxErrDetail.offset
-            ? `-${syntaxErrDetail.end_offset}`
-            : ''
-        })`,
+        message: t('queryForm.syntaxError', {
+          defaultValue:
+            'Query syntax error at line ({{line}}, {{offset}}{{endOffset}})',
+          values: {
+            line: syntaxErrDetail.line,
+            offset: syntaxErrDetail.offset,
+            endOffset,
+          },
+        }),
         detail: syntaxErrDetail,
       };
     }
     return;
-  }, [error, query.advancedModeOn]);
+  }, [error, query.advancedModeOn, t]);
 
   const onInputChange = React.useCallback(
     (val: string) => {
@@ -277,7 +285,9 @@ function QueryForm(props: IQueryFormProps) {
                       name='plus'
                       className='QueryForm__topPanel__plusIcon'
                     />
-                    {sequenceName}
+                    {t(`queryForm.sequenceName.${sequenceName}`, {
+                      defaultValue: sequenceName,
+                    })}
                   </Button>
                   <Popper
                     open={!!anchorEl}
@@ -315,7 +325,9 @@ function QueryForm(props: IQueryFormProps) {
                             onChange: handleSearchInputChange,
                           }}
                           spellCheck={false}
-                          placeholder='Search'
+                          placeholder={t('common.search', {
+                            defaultValue: 'Search',
+                          })}
                           autoFocus={true}
                           className='QueryForm__metric__select'
                         />
@@ -351,7 +363,17 @@ function QueryForm(props: IQueryFormProps) {
                   />
                   {query.selections.length === 0 && (
                     <Text tint={50} size={14} weight={400}>
-                      No {sequenceName} are selected
+                      {t('queryForm.noSelection', {
+                        defaultValue: 'No {{sequenceName}} are selected',
+                        values: {
+                          sequenceName: t(
+                            `queryForm.sequenceName.${sequenceName}`,
+                            {
+                              defaultValue: sequenceName,
+                            },
+                          ),
+                        },
+                      })}
                     </Text>
                   )}
                   <div className='QueryForm__tags ScrollBar__hidden'>
@@ -407,7 +429,9 @@ function QueryForm(props: IQueryFormProps) {
               disabled={!ranges?.isValid || isInsufficientResources}
             />
             <div className='QueryForm__search__actions'>
-              <Tooltip title='Reset query'>
+              <Tooltip
+                title={t('queryForm.reset', { defaultValue: 'Reset query' })}
+              >
                 <div>
                   <Button
                     onClick={handleResetQueryForm}
@@ -421,8 +445,12 @@ function QueryForm(props: IQueryFormProps) {
               <Tooltip
                 title={
                   query.advancedModeOn
-                    ? 'Switch to default mode'
-                    : 'Enable advanced search mode '
+                    ? t('queryForm.switchToDefault', {
+                        defaultValue: 'Switch to default mode',
+                      })
+                    : t('queryForm.enableAdvancedMode', {
+                        defaultValue: 'Enable advanced search mode',
+                      })
                 }
               >
                 <div>
@@ -436,7 +464,11 @@ function QueryForm(props: IQueryFormProps) {
                   </Button>
                 </div>
               </Tooltip>
-              <Tooltip title='Copy search query'>
+              <Tooltip
+                title={t('queryForm.copyQuery', {
+                  defaultValue: 'Copy search query',
+                })}
+              >
                 <div>
                   <Button onClick={onQueryCopy} withOnlyIcon={true}>
                     <Icon name='copy' />

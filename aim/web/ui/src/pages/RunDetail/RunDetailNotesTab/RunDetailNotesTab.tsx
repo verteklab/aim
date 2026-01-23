@@ -14,6 +14,7 @@ import RouteLeavingGuard from 'components/RouteLeavingGuard';
 import { ANALYTICS_EVENT_KEYS } from 'config/analytics/analyticsKeysMap';
 import { RichEditorThemeColors } from 'config/colors/colors';
 import { YEAR_MONTH_DAY_DATE_FORMAT } from 'config/dates/dates';
+import { useTranslation } from 'config/i18n';
 
 import * as analytics from 'services/analytics';
 import notesModel from 'services/models/notes/notesModel';
@@ -29,6 +30,7 @@ function RunDetailNotesTab({
   runHash,
 }: IRunDetailNotesTabProps): React.FunctionComponentElement<React.ReactNode> {
   const { isLoading, noteData, notifyData } = useModel(notesModel)!;
+  const { t } = useTranslation();
   const [value, setValue] = React.useState<string>('');
   const [saveDisabled, setSaveDisabled] = React.useState<boolean>(true);
   const [theme, setTheme] = React.useState<null | {}>(null);
@@ -94,7 +96,11 @@ function RunDetailNotesTab({
         <div className='RunDetailNotesTab__Editor__actionPanel'>
           <div className='RunDetailNotesTab__Editor__actionPanel__info'>
             {noteData?.created_at && (
-              <Tooltip title='Created at'>
+              <Tooltip
+                title={t('runDetail.notes.createdAt', {
+                  defaultValue: 'Created at',
+                })}
+              >
                 <div className='RunDetailNotesTab__Editor__actionPanel__info-field'>
                   <Icon name='calendar' />
                   <Text tint={70}>
@@ -107,7 +113,11 @@ function RunDetailNotesTab({
               </Tooltip>
             )}
             {noteData?.updated_at && (
-              <Tooltip title='Updated at'>
+              <Tooltip
+                title={t('runDetail.notes.updatedAt', {
+                  defaultValue: 'Updated at',
+                })}
+              >
                 <div className='RunDetailNotesTab__Editor__actionPanel__info-field'>
                   <Icon name='time' />
                   <Text tint={70}>
@@ -120,7 +130,11 @@ function RunDetailNotesTab({
               </Tooltip>
             )}
           </div>
-          <Tooltip title='Save Note'>
+          <Tooltip
+            title={t('runDetail.notes.saveNote', {
+              defaultValue: 'Save Note',
+            })}
+          >
             <div>
               <Button
                 disabled={saveDisabled || isLoading}
@@ -129,7 +143,7 @@ function RunDetailNotesTab({
                 onClick={onNoteSave}
                 className='RunDetailNotesTab__Editor__actionPanel__saveBtn'
               >
-                Save
+                {t('runDetail.notes.save', { defaultValue: 'Save' })}
               </Button>
             </div>
           </Tooltip>
@@ -138,7 +152,9 @@ function RunDetailNotesTab({
           ref={editorRef}
           className='RunDetailNotesTab__Editor__container'
           value={value}
-          placeholder='Leave your Note'
+          placeholder={t('runDetail.notes.placeholder', {
+            defaultValue: 'Leave your Note',
+          })}
           theme={theme || editorRef.current?.theme()}
           disableExtensions={['table', 'image', 'container_notice']}
           tooltip={({ children }) => {

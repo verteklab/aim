@@ -20,6 +20,7 @@ import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 import ChartLegends from 'components/ChartPanel/ChartLegends';
 
 import { CONTROLS_DEFAULT_CONFIG } from 'config/controls/controlsDefaultConfig';
+import { useTranslation } from 'config/i18n';
 
 import { IControlProps } from 'types/pages/metrics/components/Controls/Controls';
 
@@ -28,6 +29,7 @@ import './Controls.scss';
 function Controls(
   props: IControlProps,
 ): React.FunctionComponentElement<React.ReactNode> {
+  const { t } = useTranslation();
   const [openExportModal, setOpenExportModal] = React.useState<boolean>(false);
 
   const highlightModeChanged: boolean = React.useMemo(() => {
@@ -81,14 +83,20 @@ function Controls(
         <div>
           <ErrorBoundary>
             <ControlPopover
-              title='Select aggregation method'
+              title={t('metrics.controls.selectAggregationMethod', {
+                defaultValue: 'Select aggregation method',
+              })}
               open={props.aggregationConfig.isEnabled}
               anchor={({ onAnchorClick, opened }) => (
                 <Tooltip
                   title={
                     props.aggregationConfig.isApplied
-                      ? 'Deaggregate metrics'
-                      : 'Aggregate metrics'
+                      ? t('metrics.controls.deaggregateMetrics', {
+                          defaultValue: 'Deaggregate metrics',
+                        })
+                      : t('metrics.controls.aggregateMetrics', {
+                          defaultValue: 'Aggregate metrics',
+                        })
                   }
                 >
                   <div
@@ -136,9 +144,15 @@ function Controls(
         <div>
           <ErrorBoundary>
             <ControlPopover
-              title='Axes properties'
+              title={t('metrics.controls.axesPropertiesTitle', {
+                defaultValue: 'Axes properties',
+              })}
               anchor={({ onAnchorClick, opened }) => (
-                <Tooltip title='Axes properties'>
+                <Tooltip
+                  title={t('metrics.controls.axesPropertiesTitle', {
+                    defaultValue: 'Axes properties',
+                  })}
+                >
                   <div
                     onClick={onAnchorClick}
                     className={classNames('Controls__anchor', {
@@ -172,9 +186,15 @@ function Controls(
         <div>
           <ErrorBoundary>
             <ControlPopover
-              title='Axes scale'
+              title={t('metrics.controls.axesScale', {
+                defaultValue: 'Axes scale',
+              })}
               anchor={({ onAnchorClick, opened }) => (
-                <Tooltip title='Axes scale'>
+                <Tooltip
+                  title={t('metrics.controls.axesScale', {
+                    defaultValue: 'Axes scale',
+                  })}
+                >
                   <div
                     onClick={onAnchorClick}
                     className={classNames('Controls__anchor', {
@@ -203,13 +223,19 @@ function Controls(
         <div>
           <ErrorBoundary>
             <ControlPopover
-              title='Chart smoothing options'
+              title={t('metrics.controls.chartSmoothingOptions', {
+                defaultValue: 'Chart smoothing options',
+              })}
               anchor={({ onAnchorClick, opened }) => (
                 <Tooltip
                   title={
                     props.smoothing.isApplied
-                      ? 'Disable smoothing'
-                      : 'Apply smoothing'
+                      ? t('metrics.controls.disableSmoothing', {
+                          defaultValue: 'Disable smoothing',
+                        })
+                      : t('metrics.controls.applySmoothing', {
+                          defaultValue: 'Apply smoothing',
+                        })
                   }
                 >
                   <div
@@ -251,7 +277,13 @@ function Controls(
         </div>
         <Tooltip
           title={
-            props.ignoreOutliers ? 'Outliers are ignored' : 'Ignore outliers'
+            props.ignoreOutliers
+              ? t('metrics.controls.outliersIgnored', {
+                  defaultValue: 'Outliers are ignored',
+                })
+              : t('metrics.controls.ignoreOutliers', {
+                  defaultValue: 'Ignore outliers',
+                })
           }
         >
           <div
@@ -272,9 +304,15 @@ function Controls(
         <div>
           <ErrorBoundary>
             <ControlPopover
-              title='Highlight modes'
+              title={t('metrics.controls.highlightModes', {
+                defaultValue: 'Highlight modes',
+              })}
               anchor={({ onAnchorClick, opened }) => (
-                <Tooltip title='Highlight modes'>
+                <Tooltip
+                  title={t('metrics.controls.highlightModes', {
+                    defaultValue: 'Highlight modes',
+                  })}
+                >
                   <div
                     className={classNames('Controls__anchor', {
                       active: opened || highlightModeChanged,
@@ -303,9 +341,15 @@ function Controls(
         <div>
           <ErrorBoundary>
             <ControlPopover
-              title='Display in tooltip'
+              title={t('metrics.controls.displayInTooltip', {
+                defaultValue: 'Display in tooltip',
+              })}
               anchor={({ onAnchorClick, opened }) => (
-                <Tooltip title='Tooltip fields'>
+                <Tooltip
+                  title={t('metrics.controls.tooltipFields', {
+                    defaultValue: 'Tooltip fields',
+                  })}
+                >
                   <div
                     onClick={onAnchorClick}
                     className={classNames('Controls__anchor', {
@@ -338,7 +382,13 @@ function Controls(
           <ErrorBoundary>
             <Tooltip
               title={
-                props.legends?.display ? 'Hide legends' : 'Display legends'
+                props.legends?.display
+                  ? t('metrics.controls.hideLegends', {
+                      defaultValue: 'Hide legends',
+                    })
+                  : t('metrics.controls.displayLegends', {
+                      defaultValue: 'Display legends',
+                    })
               }
             >
               <div
@@ -368,9 +418,15 @@ function Controls(
         <div>
           <ErrorBoundary>
             <ControlPopover
-              title='Select zoom mode'
+              title={t('metrics.controls.selectZoomMode', {
+                defaultValue: 'Select zoom mode',
+              })}
               anchor={({ onAnchorClick, opened }) => (
-                <Tooltip title='Zoom in'>
+                <Tooltip
+                  title={t('metrics.controls.zoomIn', {
+                    defaultValue: 'Zoom in',
+                  })}
+                >
                   <div
                     className={classNames('Controls__anchor', {
                       active: props.zoom?.active,
@@ -410,10 +466,16 @@ function Controls(
         <div>
           <ErrorBoundary>
             <ControlPopover
-              title='Select option to zoom out'
+              title={t('metrics.controls.selectOptionToZoomOut', {
+                defaultValue: 'Select option to zoom out',
+              })}
               open={!!props.zoom?.history.length}
               anchor={({ onAnchorClick, opened }) => (
-                <Tooltip title='Zoom out'>
+                <Tooltip
+                  title={t('metrics.controls.zoomOut', {
+                    defaultValue: 'Zoom out',
+                  })}
+                >
                   <div
                     className={classNames('Controls__anchor', {
                       disabled: !props.zoom?.history.length,
@@ -451,7 +513,11 @@ function Controls(
         </div>
         <ErrorBoundary>
           {/* TODO add ability to open modals in ControlPopover component and change the name of the ControlPopover to more general*/}
-          <Tooltip title='Export chart'>
+          <Tooltip
+            title={t('metrics.controls.exportChart', {
+              defaultValue: 'Export chart',
+            })}
+          >
             <div className='Controls__anchor' onClick={onToggleExportPreview}>
               <Icon className='Controls__icon' name='download' />
             </div>

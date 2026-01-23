@@ -9,6 +9,8 @@ import { Button, Icon, Badge, Text } from 'components/kit';
 import SelectTag from 'components/SelectTag/SelectTag';
 import ErrorBoundary from 'components/ErrorBoundary';
 
+import { useTranslation } from 'config/i18n';
+
 import runsService from 'services/api/runs/runsService';
 
 import { ITagInfo } from 'types/pages/tags/Tags';
@@ -26,6 +28,7 @@ function AttachedTagsList({
   onRunsTagsChange,
   inlineAttachedTagsList = false,
 }: IAttachedTagsListProps) {
+  const { t } = useTranslation();
   const [attachedTags, setAttachedTags] = React.useState<ITagInfo[]>(
     tags ?? initialTags ?? [],
   );
@@ -84,10 +87,16 @@ function AttachedTagsList({
 
     return (
       <div className='AttachedTagsList__noAttachedTags'>
-        {inlineAttachedTagsList ? 'Click to edit tags' : 'No attached tags'}
+        {inlineAttachedTagsList
+          ? t('tags.attachedTags.clickToEdit', {
+              defaultValue: 'Click to edit tags',
+            })
+          : t('tags.attachedTags.noAttachedTags', {
+              defaultValue: 'No attached tags',
+            })}
       </div>
     );
-  }, [attachedTags, inlineAttachedTagsList]);
+  }, [attachedTags, inlineAttachedTagsList, t]);
 
   const renderAddTagsButton = React.useCallback(() => {
     return (
@@ -109,7 +118,8 @@ function AttachedTagsList({
           headerRenderer(attachedTags?.length)
         ) : (
           <Text className='AttachedTagsList__title'>
-            Tags {!_.isEmpty(attachedTags) ? `(${attachedTags.length})` : null}
+            {t('tags.attachedTags.title', { defaultValue: 'Tags' })}{' '}
+            {!_.isEmpty(attachedTags) ? `(${attachedTags.length})` : null}
           </Text>
         )}
         <Box
@@ -120,7 +130,7 @@ function AttachedTagsList({
           {!inlineAttachedTagsList && renderTagsBadges()}
 
           <ControlPopover
-            title='Tags'
+            title={t('tags.attachedTags.title', { defaultValue: 'Tags' })}
             titleClassName='AttachedTagsList__ControlPopover__title'
             anchorOrigin={{
               vertical: 'bottom',
@@ -142,13 +152,14 @@ function AttachedTagsList({
               </div>
             )}
             component={
-              <SelectTag
-                runHash={runHash}
-                attachedTags={attachedTags}
-                setAttachedTags={setAttachedTags}
-                onRunsTagsChange={onRunsTagsChange}
-                updatePopover={setSelectTagPopoverKey}
-              />
+              <div></div>
+              // <SelectTag
+              //   runHash={runHash}
+              //   attachedTags={attachedTags}
+              //   setAttachedTags={setAttachedTags}
+              //   onRunsTagsChange={onRunsTagsChange}
+              //   updatePopover={setSelectTagPopoverKey}
+              // />
             }
           />
         </Box>

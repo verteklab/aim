@@ -10,6 +10,8 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { Badge, Text } from 'components/kit';
 import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 
+import { useTranslation } from 'config/i18n';
+
 import { IGroupingPopoverProps } from 'types/components/GroupingPopover/GroupingPopover';
 import { IGroupingSelectOption } from 'types/services/models/metrics/metricsAppModel';
 
@@ -24,6 +26,7 @@ function GroupingPopover({
   onGroupingModeChange,
   inputLabel,
 }: IGroupingPopoverProps): React.FunctionComponentElement<React.ReactNode> {
+  const { t } = useTranslation();
   const [inputValue, setInputValue] = React.useState('');
 
   function onChange(e: any, values: IGroupingSelectOption[]): void {
@@ -100,7 +103,16 @@ function GroupingPopover({
               component='h3'
               className='GroupingPopover__subtitle'
             >
-              {inputLabel ?? `Select fields for grouping by ${groupName}`}
+              {inputLabel ??
+                t('grouping.selectFieldsForGroupingBy', {
+                  defaultValue: 'Select fields for grouping by {{groupName}}',
+                  values: {
+                    groupName:
+                      t(`grouping.groupName.${groupName}`, {
+                        defaultValue: groupName,
+                      }) || groupName,
+                  },
+                })}
             </Text>
             <Autocomplete
               multiple
@@ -127,7 +139,9 @@ function GroupingPopover({
                   }}
                   className='TextField__OutLined__Small'
                   variant='outlined'
-                  placeholder='Select fields'
+                  placeholder={t('grouping.selectFields', {
+                    defaultValue: 'Select fields',
+                  })}
                 />
               )}
               renderTags={(value, getTagProps) => (

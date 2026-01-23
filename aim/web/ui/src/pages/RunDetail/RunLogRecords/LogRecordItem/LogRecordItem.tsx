@@ -9,6 +9,8 @@ import { Icon, JsonViewPopover, Text } from 'components/kit';
 import ControlPopover from 'components/ControlPopover/ControlPopover';
 import DictVisualizer from 'components/kit/DictVisualizer';
 
+import { useTranslation } from 'config/i18n';
+
 import { ListItemEnum, RunLogRecordsConfig } from './config';
 
 import { ILogRecordItemProps } from '.';
@@ -18,6 +20,7 @@ import './LogRecordItem.scss';
 function LogRecordItem(
   props: ILogRecordItemProps,
 ): React.FunctionComponentElement<React.ReactNode> {
+  const { t } = useTranslation();
   const item = props.data[props.index];
 
   const itemRenderer = () => {
@@ -72,7 +75,10 @@ function LogRecordItem(
                     size={12}
                     className='LogRecordItem__content__item__leftBox__date'
                   >
-                    {item?.date ?? 'no date found'}
+                    {item?.date ??
+                      t('runDetail.logs.noDateFound', {
+                        defaultValue: 'no date found',
+                      })}
                   </Text>
                 </div>
               </div>
@@ -82,14 +88,24 @@ function LogRecordItem(
                   justifyContent: item.extraParams ? 'flex-start' : 'center',
                 }}
               >
-                <Tooltip title={item?.message ?? 'no message found'}>
+                <Tooltip
+                  title={
+                    item?.message ??
+                    t('runDetail.logs.noMessageFound', {
+                      defaultValue: 'no message found',
+                    })
+                  }
+                >
                   <div>
                     <Text
                       className='LogRecordItem__content__item__itemBox__message'
                       component='pre'
                       size={14}
                     >
-                      {item?.message ?? 'no message found'}
+                      {item?.message ??
+                        t('runDetail.logs.noMessageFound', {
+                          defaultValue: 'no message found',
+                        })}
                     </Text>
                   </div>
                 </Tooltip>
@@ -98,7 +114,9 @@ function LogRecordItem(
                   <div className='LogRecordItem__content__item__itemBox__extraParams'>
                     <ControlPopover
                       key={item.hash}
-                      title='Message Payload'
+                      title={t('runDetail.logs.messagePayload', {
+                        defaultValue: 'Message Payload',
+                      })}
                       anchorOrigin={{
                         vertical: 'top',
                         horizontal: 'left',

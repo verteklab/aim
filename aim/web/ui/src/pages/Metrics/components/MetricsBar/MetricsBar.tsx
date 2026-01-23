@@ -120,13 +120,13 @@ function MetricsBar({
                   <MenuItem onClick={onResetConfigData}>
                     {t('common.resetControls')}
                   </MenuItem>
-                  <a
+                  {/* <a
                     href={DOCUMENTATIONS.EXPLORERS[explorerName].MAIN}
                     target='_blank'
                     rel='noreferrer'
                   >
                     <MenuItem>{t('common.explorerDocumentation')}</MenuItem>
-                  </a>
+                  </a> */}
                 </div>
               }
             />

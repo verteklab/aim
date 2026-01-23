@@ -19,6 +19,7 @@ import NotificationContainer, {
 import { Spinner } from 'components/kit';
 
 import { ANALYTICS_EVENT_KEYS } from 'config/analytics/analyticsKeysMap';
+import { useTranslation } from 'config/i18n';
 
 import * as analytics from 'services/analytics';
 
@@ -57,19 +58,20 @@ const ExperimentSettingsTab = React.lazy(
     ),
 );
 
-const tabs: Record<string, string> = {
-  overview: 'Overview',
-  runs: 'Runs',
-  notes: 'Notes',
-  settings: 'Settings',
-};
-
 function Experiment(): React.FunctionComponentElement<React.ReactNode> {
   const { experimentId } = useParams<{ experimentId: string }>();
   const history = useHistory();
   const { url } = useRouteMatch();
   const { pathname } = useLocation();
   const [activeTab, setActiveTab] = React.useState(pathname);
+  const { t } = useTranslation();
+
+  const tabs: Record<string, string> = {
+    overview: t('experiment.tabs.overview', { defaultValue: 'Overview' }),
+    runs: t('experiment.tabs.runs', { defaultValue: 'Runs' }),
+    notes: t('experiment.tabs.notes', { defaultValue: 'Notes' }),
+    settings: t('experiment.tabs.settings', { defaultValue: 'Settings' }),
+  };
   const {
     experimentState,
     experimentsState,
@@ -129,13 +131,14 @@ function Experiment(): React.FunctionComponentElement<React.ReactNode> {
   function redirect(): void {
     const splitPathname: string[] = pathname.split('/');
     const path: string = `${url}/overview`;
+    const tabKeys = ['overview', 'runs', 'notes', 'settings'];
     if (splitPathname.length > 4) {
       history.replace(path);
       setActiveTab(path);
       return;
     }
     if (splitPathname[3]) {
-      if (!Object.keys(tabs).includes(splitPathname[3])) {
+      if (!tabKeys.includes(splitPathname[3])) {
         history.replace(path);
       }
     } else {
@@ -145,7 +148,8 @@ function Experiment(): React.FunctionComponentElement<React.ReactNode> {
   }
 
   function getCurrentTabValue(pathname: string, url: string) {
-    const values = Object.keys(tabs).map((tabKey) => `${url}/${tabKey}`);
+    const tabKeys = ['overview', 'runs', 'notes', 'settings'];
+    const values = tabKeys.map((tabKey) => `${url}/${tabKey}`);
     return values.indexOf(pathname) === -1 ? false : pathname;
   }
 
@@ -186,7 +190,7 @@ function Experiment(): React.FunctionComponentElement<React.ReactNode> {
             indicatorColor='primary'
             textColor='primary'
           >
-            {Object.keys(tabs).map((tabKey: string) => (
+            {['overview', 'runs', 'notes', 'settings'].map((tabKey: string) => (
               <Tab
                 key={`${url}/${tabKey}`}
                 label={tabs[tabKey]}
@@ -202,7 +206,7 @@ function Experiment(): React.FunctionComponentElement<React.ReactNode> {
           height='calc(100vh - 112px)'
         >
           <Switch>
-            {Object.keys(tabs).map((tabKey: string) => {
+            {['overview', 'runs', 'notes', 'settings'].map((tabKey: string) => {
               const { Component, props } = tabContent[tabKey];
               return (
                 <Route path={`${url}/${tabKey}`} key={tabKey}>

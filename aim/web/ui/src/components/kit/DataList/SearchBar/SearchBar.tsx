@@ -11,6 +11,8 @@ import {
   MatchTypes,
 } from 'components/kit/DataList/SearchBar/types.d';
 
+import { useTranslation } from 'config/i18n';
+
 import SearchInput from './SearchInput';
 
 import './SearchBar.scss';
@@ -26,6 +28,7 @@ function SearchBar({
   disableMatchBar = false,
   toolbarItems,
 }: ISearchBarProps) {
+  const { t } = useTranslation();
   return (
     <ErrorBoundary>
       <div className='SearchBar'>
@@ -38,7 +41,9 @@ function SearchBar({
         />
         {disableMatchBar ? null : (
           <div className='MatchIcons'>
-            <Tooltip title='Match Case'>
+            <Tooltip
+              title={t('searchBar.matchCase', { defaultValue: 'Match Case' })}
+            >
               <div
                 className={classNames({
                   MatchButton: true,
@@ -66,7 +71,9 @@ function SearchBar({
                 </Button>
               </div>
             </Tooltip>
-            <Tooltip title='Match Word'>
+            <Tooltip
+              title={t('searchBar.matchWord', { defaultValue: 'Match Word' })}
+            >
               <div
                 className={classNames({
                   MatchButton: true,
@@ -94,7 +101,11 @@ function SearchBar({
                 </Button>
               </div>
             </Tooltip>
-            <Tooltip title='Match Regexp'>
+            <Tooltip
+              title={t('searchBar.matchRegexp', {
+                defaultValue: 'Match Regexp',
+              })}
+            >
               <div className='MatchButton'>
                 <Button
                   withOnlyIcon

@@ -8,6 +8,8 @@ import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 import IllustrationBlock from 'components/IllustrationBlock/IllustrationBlock';
 import { Spinner } from 'components/kit';
 
+import { useTranslation } from 'config/i18n';
+
 import { LogsLastRequestEnum } from '../RunLogsTab';
 
 import LogRecordItem from './LogRecordItem';
@@ -21,6 +23,7 @@ function RunLogRecords({
   runHash,
   inProgress,
 }: IRunLogRecordsProps): React.FunctionComponentElement<React.ReactNode> | null {
+  const { t } = useTranslation();
   const {
     data,
     loadMore,
@@ -114,7 +117,9 @@ function RunLogRecords({
               <IllustrationBlock
                 size='xLarge'
                 className='RunDetailTabLoader'
-                title='No Messages'
+                title={t('runDetail.messages.empty', {
+                  defaultValue: 'No Messages',
+                })}
               />
             )}
           </div>

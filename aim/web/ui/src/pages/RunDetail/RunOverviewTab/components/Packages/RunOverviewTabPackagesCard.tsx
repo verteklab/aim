@@ -5,6 +5,8 @@ import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 import BusyLoaderWrapper from 'components/BusyLoaderWrapper/BusyLoaderWrapper';
 import { ICardProps } from 'components/kit/Card/Card.d';
 
+import { useTranslation } from 'config/i18n';
+
 import { formatValue } from 'utils/formatValue';
 
 import { IRunOverviewTabPackagesCardProps } from './RunOverviewTabPackagesCard.d';
@@ -13,6 +15,7 @@ function RunOverviewTabPackagesCard({
   packages,
   isRunInfoLoading,
 }: IRunOverviewTabPackagesCardProps) {
+  const { t } = useTranslation();
   const tableData = React.useMemo(
     () =>
       Object.entries(packages || {}).map(([key = '', value], index) => ({
@@ -31,7 +34,7 @@ function RunOverviewTabPackagesCard({
           width: '50%',
           title: (
             <Text weight={600} size={14} tint={100}>
-              Packages
+              {t('runDetail.overview.packages', { defaultValue: 'Packages' })}
               <Text
                 weight={600}
                 size={14}
@@ -50,7 +53,7 @@ function RunOverviewTabPackagesCard({
           dataKey: 'value',
           key: 'value',
           width: '50%',
-          title: 'Value',
+          title: t('runDetail.overview.value', { defaultValue: 'Value' }),
           cellRenderer: ({ cellData }: any) => (
             <p title={cellData}>{cellData}</p>
           ),
@@ -59,16 +62,20 @@ function RunOverviewTabPackagesCard({
       tableData,
       illustrationConfig: {
         size: 'large',
-        title: 'No Results',
+        title: t('runDetail.overview.noResults', {
+          defaultValue: 'No Results',
+        }),
       },
     }),
-    [tableData],
+    [tableData, t],
   );
   return (
     <ErrorBoundary>
       <BusyLoaderWrapper isLoading={isRunInfoLoading} height='100%'>
         <Card
-          title='Packages'
+          title={t('runDetail.overview.packages', {
+            defaultValue: 'Packages',
+          })}
           className='RunOverviewTab__cardBox'
           dataListProps={dataListProps}
         />
