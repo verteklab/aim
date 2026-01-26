@@ -21,7 +21,6 @@ function PageWrapper(props: {
     const handleParentMsg = (e: MessageEvent) => {
       // 1. 过滤非相关消息
       if (e.data?.type !== 'AIM_GO_BACK') return;
-
       // 2. 对比当前状态与初始状态
       // 如果路径一致，且参数也完全一致，说明回到了“原点”
       const isAtStart =
@@ -32,7 +31,9 @@ function PageWrapper(props: {
         window.parent.postMessage({ type: 'AIM_AT_ROOT' }, '*');
       } else {
         // 还没到根，执行内部回退
-        history.goBack();
+        history.replace(e.data?.root_url + e.data?.root_search, {
+          replace: true,
+        });
       }
     };
 

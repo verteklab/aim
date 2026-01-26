@@ -24,7 +24,7 @@ function Runs(props: any): React.FunctionComponentElement<React.ReactNode> {
             onLiveUpdateConfigChange={props.onLiveUpdateConfigChange}
             disabled={isProgressBarVisible}
           />
-          <SearchBar
+          {/* <SearchBar
             selectFormData={props.selectFormData}
             onSearchInputChange={props.onSelectRunQueryChange}
             searchValue={props.query}
@@ -32,7 +32,7 @@ function Runs(props: any): React.FunctionComponentElement<React.ReactNode> {
               props.requestStatus === RequestStatusEnum.Pending
             }
             isDisabled={isProgressBarVisible}
-          />
+          /> */}
           <div className='Runs__table__container'>
             <ProgressBar
               progress={props.requestProgress}
