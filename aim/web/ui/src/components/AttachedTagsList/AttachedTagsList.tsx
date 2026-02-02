@@ -152,14 +152,13 @@ function AttachedTagsList({
               </div>
             )}
             component={
-              <div></div>
-              // <SelectTag
-              //   runHash={runHash}
-              //   attachedTags={attachedTags}
-              //   setAttachedTags={setAttachedTags}
-              //   onRunsTagsChange={onRunsTagsChange}
-              //   updatePopover={setSelectTagPopoverKey}
-              // />
+              <SelectTag
+                runHash={runHash}
+                attachedTags={attachedTags}
+                setAttachedTags={setAttachedTags}
+                onRunsTagsChange={onRunsTagsChange}
+                updatePopover={setSelectTagPopoverKey}
+              />
             }
           />
         </Box>
