@@ -1038,7 +1038,7 @@ const Table = React.forwardRef(function Table(
                   </div>
                 ) : (
                   <ErrorBoundary>
-                    {/* <BaseTable
+                    <BaseTable
                       ref={tableRef}
                       classPrefix='BaseTable'
                       columns={columnsData}
@@ -1073,7 +1073,7 @@ const Table = React.forwardRef(function Table(
                       onRowHover={onRowHover}
                       onRowClick={onRowClick}
                       disableRowClick={disableRowClick}
-                    /> */}
+                    />
                   </ErrorBoundary>
                 )
               }
